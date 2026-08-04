@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GoRide Booking</title>
+
+<link rel="stylesheet" href="style.css">
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="script.js" defer></script>
+
+
+<script>
+window.onload = function () {
+    const selectedCar = localStorage.getItem("selectedCar");
+
+    if (selectedCar) {
+        document.getElementById("car").value = selectedCar;
+        if (typeof calculatePrice === "function") {
+            calculatePrice();
+        }
+    }
+};
+</script>
+
+</head>
+
+<body>
+
+<header>
+    <h1>GoRide 🚗</h1>
+    <p>Drive Freely, Live Fully</p>
+</header>
+
+<nav>
+    <a href="index.html">Home</a>
+    <a href="cars.html">Cars</a>
+    <a href="booking.html">Booking</a>
+    <a href="login.html">Login</a>
+</nav>
+
+<div class="booking-form">
+
+<h2>Book Your Ride</h2>
+
+<label>Full Name</label>
+<input type="text" id="name" placeholder="Enter Full Name">
+
+<label>Mobile Number</label>
+<input type="tel" id="mobile" placeholder="Enter Mobile Number">
+
+<label>Pickup Date</label>
+<input type="date" id="pickup" onchange="calculateDays()">
+
+<label>Return Date</label>
+<input type="date" id="return" onchange="calculateDays()">
+
+<label>Select Car</label>
+
+<select id="car" onchange="calculatePrice()">
+
+<option value="">Select Car</option>
+<option value="Tata Punch">Tata Punch - ₹1900/day</option>
+<option value="Maruti Swift">Maruti Swift - ₹1900/day</option>
+<option value="Brezza">Brezza - ₹2200/day</option>
+<option value="Creta">Creta - ₹2500/day</option>
+<option value="Innova">Innova - ₹3000/day</option>
+
+</select>
+
+<label>Price Per Day</label>
+<input type="text" id="price" readonly>
+
+<label>Total Days</label>
+<input type="text" id="days" readonly>
+
+<label>Total Amount</label>
+<input type="text" id="total" readonly>
+<label>Upload Driving Licence</label>
+<input type="file" id="license" accept="image/*,.pdf">
+
+<label>Upload Aadhaar (Optional)</label>
+<input type="file" id="aadhaar" accept="image/*,.pdf">
+
+<label>Booking ID</label>
+<input type="text" id="bookingId" readonly>
+
+<button onclick="startPayment()">
+    Pay Now
+</button>
+
+</div>
+
+<footer>
+    <p>© 2026 GoRide. All Rights Reserved.</p>
+</footer>
+
+</body>
+</html>
