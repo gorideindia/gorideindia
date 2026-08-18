@@ -105,7 +105,7 @@ function startPayment() {
         },
 
         body: JSON.stringify({
-            amount: 1
+            amount: amount
         })
 
     })
@@ -346,8 +346,15 @@ function registerUser() {
 
 function login() {
 
-    const mobile = document.getElementById("mobile").value;
-    const password = document.getElementById("password").value;
+    const mobile = document.getElementById("mobile").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    if (!mobile || !password) {
+        alert("Please enter mobile and password");
+        return;
+    }
+
+    console.log("LOGIN:", mobile, password);
 
     fetch("/login", {
 
@@ -358,8 +365,8 @@ function login() {
         },
 
         body: JSON.stringify({
-            mobile,
-            password
+            mobile: mobile,
+            password: password
         })
 
     })
@@ -368,14 +375,18 @@ function login() {
 
     .then(data => {
 
+        console.log("LOGIN RESPONSE:", data);
+
         if (data.success) {
 
             if (data.isAdmin) {
 
+                alert("Admin Login Successful");
                 location.href = "admin.html";
 
             } else {
 
+                alert("Login Successful");
                 location.href = "profile.html";
 
             }
@@ -390,12 +401,9 @@ function login() {
 
     .catch(err => {
 
-        console.log(err);
+        console.log("LOGIN ERROR:", err);
         alert("Server Error");
 
     });
 
 }
-
-
-console.log("GoRide Script Loaded Successfully");

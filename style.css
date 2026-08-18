@@ -1,296 +1,212 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+/* ================================
+GO RIDE MODERN UI
+================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-body{
-    font-family:Arial,sans-serif;
-    background:#f5f5f5;
+body {
+  font-family: "Segoe UI", sans-serif;
+  background: #f5f7fa;
+  color: #111;
 }
 
-header{
-    background:#0a8f3d;
-    color:white;
-    text-align:center;
-    padding:25px;
+/* ================================
+NAVBAR (PREMIUM)
+================================ */
+
+nav {
+  background: #020914;
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 40px;
+  align-items: center;
 }
 
-header h1{
-    font-size:40px;
+nav a {
+  color: white;
+  margin: 0 12px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.3s;
 }
 
-header p{
-    margin-top:8px;
-    font-size:18px;
+nav a:hover {
+  color: #6ccf00;
 }
 
-nav{
-    background:#0056b3;
-    text-align:center;
-    padding:15px;
+/* ================================
+HEADER / HERO
+================================ */
+
+header {
+  background: linear-gradient(90deg, #020914, #0b1d3a);
+  color: white;
+  padding: 80px 40px;
 }
 
-nav a{
-    color:white;
-    text-decoration:none;
-    margin:15px;
-    font-size:18px;
-    font-weight:bold;
+header h1 {
+  font-size: 60px;
 }
 
-nav a:hover{
-    color:yellow;
+header span {
+  color: #6ccf00;
 }
 
-.booking-form{
-    width:400px;
-    max-width:90%;
-    background:white;
-    margin:40px auto;
-    padding:30px;
-    border-radius:15px;
-    box-shadow:0 0 15px rgba(0,0,0,0.2);
+header p {
+  margin-top: 10px;
+  font-size: 20px;
+  color: #ccc;
 }
 
-.booking-form h2{
-    text-align:center;
-    color:#0a8f3d;
-    margin-bottom:20px;
+.hero-btn {
+  margin-top: 20px;
 }
 
-.booking-form label{
-    display:block;
-    margin-top:15px;
-    font-weight:bold;
-}
-.how-it-works{
-    padding:50px 20px;
-    text-align:center;
-    background:#ffffff;
+.hero-btn button {
+  margin-right: 10px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
 }
 
-.card{
-    display:inline-block;
-    width:250px;
-    margin:15px;
-    padding:20px;
-    background:#f8f8f8;
-    border-radius:12px;
-    box-shadow:0 2px 10px rgba(0,0,0,0.15);
-}
-.search-box{
-    text-align:center;
-    padding:40px 20px;
-    background:#eef7ee;
+.primary-btn {
+  background: #6ccf00;
+  color: black;
 }
 
-.search-box input{
-    width:300px;
-    max-width:90%;
-    padding:12px;
-    border:1px solid #ccc;
-    border-radius:8px;
-    font-size:16px;
+.secondary-btn {
+  background: transparent;
+  border: 1px solid #6ccf00;
+  color: white;
 }
 
-.search-box button{
-    width:auto;
-    margin-left:10px;
-    padding:12px 20px;
-    background:#0a8f3d;
-    color:white;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-}
-.stats{
-    text-align:center;
-    padding:50px 20px;
-    background:#e8f5e9;
+/* ================================
+CARDS
+================================ */
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  transition: 0.3s;
 }
 
-.stats .card{
-    display:inline-block;
-    width:220px;
-    margin:15px;
-    padding:20px;
-    background:white;
-    border-radius:12px;
-    box-shadow:0 3px 10px rgba(0,0,0,0.2);
+.card:hover {
+  transform: translateY(-5px);
 }
 
-.stats h1{
-    color:#0a8f3d;
-    font-size:40px;
-}
-.offers{
-    padding:50px 20px;
-    text-align:center;
-    background:#fff8e1;
+.card img {
+  width: 100%;
+  border-radius: 10px;
 }
 
-.offers .card{
-    display:inline-block;
-    width:250px;
-    margin:15px;
-    padding:20px;
-    background:white;
-    border-radius:12px;
-    box-shadow:0 3px 10px rgba(0,0,0,0.15);
-}
-.categories{
-    padding:50px 20px;
-    text-align:center;
-    background:#f5f5f5;
+.card h3 {
+  margin-top: 10px;
 }
 
-.categories .card{
-    display:inline-block;
-    width:220px;
-    margin:15px;
-    padding:20px;
-    background:white;
-    border-radius:12px;
-    box-shadow:0 3px 10px rgba(0,0,0,0.15);
-}
-.whatsapp{
-    position:fixed;
-    bottom:20px;
-    right:20px;
-    width:60px;
-    height:60px;
-    background:#25D366;
-    color:white;
-    font-size:32px;
-    text-decoration:none;
-    border-radius:50%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    box-shadow:0 4px 10px rgba(0,0,0,0.3);
+.price {
+  color: #6ccf00;
+  font-weight: bold;
 }
 
-.whatsapp:hover{
-    background:#1ebe5d;
-}
-.services{
-    padding:50px 20px;
-    text-align:center;
-    background:#f8f9fa;
+/* ================================
+SECTION
+================================ */
+
+section {
+  padding: 40px;
+  text-align: center;
 }
 
-.services .card{
-    display:inline-block;
-    width:250px;
-    margin:15px;
-    padding:20px;
-    background:white;
-    border-radius:12px;
-    box-shadow:0 3px 10px rgba(0,0,0,0.15);
-}
-.faq{
-    padding:50px 20px;
-    text-align:center;
-    background:#ffffff;
+section h2 {
+  margin-bottom: 20px;
+  font-size: 28px;
 }
 
-.faq .card{
-    display:inline-block;
-    width:250px;
-    margin:15px;
-    padding:20px;
-    background:#f9f9f9;
-    border-radius:12px;
-    box-shadow:0 3px 10px rgba(0,0,0,0.15);
-}
-.cars-header{
-    background:#0a8f3d;
-    color:white;
-    text-align:center;
-    padding:50px 20px;
+/* ================================
+BOOKING FORM (FIXED ISSUE)
+================================ */
+
+.booking-form {
+  max-width: 500px;
+  margin: 40px auto;
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
-.cars-header h1{
-    color:white;
-    font-size:45px;
-    margin-bottom:10px;
+.booking-form input,
+.booking-form select {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
 }
 
-.cars-header p{
-    font-size:20px;
-}
-.cars-list{
-    text-align:center;
-    padding:40px 20px;
-}
-
-.cars-list .card{
-    display:inline-block;
-    width:280px;
-    margin:20px;
-    padding:20px;
-    background:white;
-    border-radius:12px;
-    box-shadow:0 3px 10px rgba(0,0,0,0.15);
+.booking-form button {
+  width: 100%;
+  background: #6ccf00;
+  color: black;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  font-weight: bold;
 }
 
-.cars-list img{
-    width:100%;
-    height:180px;
-    object-fit:cover;
-    border-radius:10px;
-}
-#cars-list{
-  display:flex;
-  flex-wrap:wrap;
-  gap:20px;
-  justify-content:center;
+/* ================================
+FEATURE STRIP
+================================ */
+
+.features-bar {
+  background: #020914;
+  color: white;
+  display: flex;
+  justify-content: space-around;
+  padding: 20px;
 }
 
-.car-card{
-  width:250px;
-  border:1px solid #ddd;
-  border-radius:10px;
-  padding:15px;
-  box-shadow:0 2px 8px rgba(0,0,0,0.2);
-  text-align:center;
-  .add-car-section{
-    background:#ffffff;
-    padding:25px;
-    border-radius:10px;
-    box-shadow:0 2px 10px rgba(0,0,0,.15);
-    margin-top:35px;
+/* ================================
+FOOTER
+================================ */
+
+footer {
+  background: #020914;
+  color: white;
+  padding: 40px;
+  text-align: center;
 }
 
-.add-car-section h2{
-    color:#0b8f4d;
-    margin-bottom:20px;
+footer a {
+  color: #6ccf00;
 }
 
-.car-form{
-    display:flex;
-    gap:15px;
-    flex-wrap:wrap;
+/* ================================
+BUTTON GLOBAL FIX
+================================ */
+
+button {
+  cursor: pointer;
 }
 
-.car-form input{
-    padding:10px;
-    border:1px solid #ccc;
-    border-radius:6px;
-    width:220px;
-}
+/* ================================
+MOBILE
+================================ */
 
-.add-car-btn{
-    background:#0b8f4d;
-    color:white;
-    border:none;
-    padding:10px 25px;
-    border-radius:6px;
-    cursor:pointer;
-    font-weight:bold;
-}
+@media(max-width:768px){
+  header h1 {
+    font-size: 35px;
+  }
 
-.add-car-btn:hover{
-    background:#08753f;
+  nav {
+    flex-direction: column;
+  }
 }
