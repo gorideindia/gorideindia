@@ -923,9 +923,17 @@ if (require.main === module) {
 // VERCEL
 // =========================
 
-module.exports = app;
-const PORT = process.env.PORT || 3000;
+// =========================
+// LOCAL SERVER / RAILWAY
+// =========================
 
-app.listen(PORT, () => {
-    console.log(`GoRide Server Started on port ${PORT}`);
-});
+if (require.main === module) {
+
+    const PORT = process.env.PORT || 3000;
+
+    app.listen(PORT, () => {
+        console.log(`GoRide Server Started on port ${PORT}`);
+    });
+}
+
+module.exports = app;
