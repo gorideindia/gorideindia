@@ -112,7 +112,6 @@ button{
 .edit{
     background:#007bff;
 }
-
 </style>
 
 </head>
@@ -126,7 +125,6 @@ button{
 <div class="container">
 
 <!-- Dashboard Cards -->
-
 <div class="cards">
 
 <div class="card">
@@ -152,14 +150,13 @@ button{
 </div>
 
 <!-- Add Car -->
-
 <div class="add-car-section">
 
 <h2>Add New Car</h2>
 
 <input type="text" id="carName" placeholder="Car Name">
 <input type="text" id="category" placeholder="Category">
-<input type="number" id="price" placeholder="Price">
+<input type="number" id="carPrice" placeholder="Price"> <!-- FIXED ID -->
 <input type="file" id="image" accept="image/*">
 
 <br><br>
@@ -171,11 +168,9 @@ Add Car
 </div>
 
 <!-- Manage Cars -->
-
 <h2>Manage Cars</h2>
 
 <table>
-
 <thead>
 <tr>
 <th>ID</th>
@@ -187,9 +182,7 @@ Add Car
 </tr>
 </thead>
 
-<tbody id="carTable">
-    </tbody>
-
+<tbody id="carTable"></tbody>
 </table>
 
 <br><br>
@@ -197,24 +190,21 @@ Add Car
 <h2>Recent Bookings</h2>
 
 <table>
-
 <thead>
 <tr>
-    <th>ID</th>
-    <th>Customer</th>
-    <th>Mobile</th>
-    <th>Car</th>
-    <th>Pickup</th>
-    <th>Return</th>
-    <th>Total</th>
-    <th>Status</th>
-    <th>Delete</th>
+<th>ID</th>
+<th>Customer</th>
+<th>Mobile</th>
+<th>Car</th>
+<th>Pickup</th>
+<th>Return</th>
+<th>Total</th>
+<th>Status</th>
+<th>Delete</th>
 </tr>
 </thead>
 
-<tbody id="bookingTable">
-
-</tbody>
+<tbody id="bookingTable"></tbody>
 
 </table>
 

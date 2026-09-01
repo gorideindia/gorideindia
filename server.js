@@ -4,6 +4,7 @@ const express = require("express");
 const mysql = require("mysql2");
 const session = require("express-session");
 const Razorpay = require("razorpay");
+const crypto = require("crypto");
 const path = require("path");
 const PDFDocument = require("pdfkit");
 
@@ -165,6 +166,62 @@ app.post("/create-order", async (req, res) => {
         res.status(500).json({
             success: false,
             message: "Order Failed"
+        });
+    }
+});
+// =========================
+// VERIFY RAZORPAY PAYMENT
+// =========================
+
+app.post("/verify-payment", (req, res) => {
+    try {
+        const {
+            razorpay_order_id,
+            razorpay_payment_id,
+            razorpay_signature
+        } = req.body;
+
+        if (
+            !razorpay_order_id ||
+            !razorpay_payment_id ||
+            !razorpay_signature
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Payment verification data missing"
+            });
+        }
+
+        const generatedSignature = crypto
+            .createHmac(
+                "sha256",
+                process.env.RAZORPAY_KEY_SECRET
+            )
+            .update(
+                razorpay_order_id + "|" + razorpay_payment_id
+            )
+            .digest("hex");
+
+        if (generatedSignature !== razorpay_signature) {
+            return res.status(400).json({
+                success: false,
+                message: "Payment verification failed"
+            });
+        }
+
+        res.json({
+            success: true,
+            message: "Payment Verified Successfully",
+            payment_id: razorpay_payment_id,
+            order_id: razorpay_order_id
+        });
+
+    } catch (err) {
+        console.log("Payment Verification Error:", err);
+
+        res.status(500).json({
+            success: false,
+            message: "Payment verification error"
         });
     }
 });

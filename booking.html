@@ -1,28 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GoRide Booking</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="style.css">
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-<script src="script.js" defer></script>
+    <title>GoRide Booking</title>
 
+    <link rel="stylesheet" href="style.css">
 
-<script>
-window.onload = function () {
-    const selectedCar = localStorage.getItem("selectedCar");
+    <!-- Razorpay -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
-    if (selectedCar) {
-        document.getElementById("car").value = selectedCar;
-        if (typeof calculatePrice === "function") {
-            calculatePrice();
-        }
-    }
-};
-</script>
-
+    <!-- GoRide JavaScript -->
+    <script src="script.js" defer></script>
 </head>
 
 <body>
@@ -32,6 +23,7 @@ window.onload = function () {
     <p>Drive Freely, Live Fully</p>
 </header>
 
+
 <nav>
     <a href="index.html">Home</a>
     <a href="cars.html">Cars</a>
@@ -39,61 +31,172 @@ window.onload = function () {
     <a href="login.html">Login</a>
 </nav>
 
+
 <div class="booking-form">
 
-<h2>Book Your Ride</h2>
+    <h2>Book Your Ride</h2>
 
-<label>Full Name</label>
-<input type="text" id="name" placeholder="Enter Full Name">
 
-<label>Mobile Number</label>
-<input type="tel" id="mobile" placeholder="Enter Mobile Number">
+    <!-- CUSTOMER DETAILS -->
 
-<label>Pickup Date</label>
-<input type="date" id="pickup" onchange="calculateDays()">
+    <label for="name">Full Name</label>
 
-<label>Return Date</label>
-<input type="date" id="return" onchange="calculateDays()">
+    <input
+        type="text"
+        id="name"
+        placeholder="Enter Full Name"
+    >
 
-<label>Select Car</label>
 
-<select id="car" onchange="calculatePrice()">
+    <label for="mobile">Mobile Number</label>
 
-<option value="">Select Car</option>
-<option value="Tata Punch">Tata Punch - ₹1900/day</option>
-<option value="Maruti Swift">Maruti Swift - ₹1900/day</option>
-<option value="Brezza">Brezza - ₹2200/day</option>
-<option value="Creta">Creta - ₹2500/day</option>
-<option value="Innova">Innova - ₹3000/day</option>
+    <input
+        type="tel"
+        id="mobile"
+        placeholder="Enter 10 Digit Mobile Number"
+        maxlength="10"
+    >
 
-</select>
 
-<label>Price Per Day</label>
-<input type="text" id="price" readonly>
+    <!-- DATE -->
 
-<label>Total Days</label>
-<input type="text" id="days" readonly>
+    <label for="pickup">Pickup Date</label>
 
-<label>Total Amount</label>
-<input type="text" id="total" readonly>
-<label>Upload Driving Licence</label>
-<input type="file" id="license" accept="image/*,.pdf">
+    <input
+        type="date"
+        id="pickup"
+        onchange="calculateDays()"
+    >
 
-<label>Upload Aadhaar (Optional)</label>
-<input type="file" id="aadhaar" accept="image/*,.pdf">
 
-<label>Booking ID</label>
-<input type="text" id="bookingId" readonly>
+    <label for="return">Return Date</label>
 
-<button onclick="startPayment()">
-    Pay Now
-</button>
+    <input
+        type="date"
+        id="return"
+        onchange="calculateDays()"
+    >
+
+
+    <!-- CAR -->
+
+    <label for="car">Select Car</label>
+
+    <select
+        id="car"
+        onchange="calculatePrice()"
+    >
+
+        <option value="">Select Car</option>
+
+        <option value="Tata Punch">
+            Tata Punch - ₹1900/day
+        </option>
+
+        <option value="Maruti Swift">
+            Maruti Swift - ₹1900/day
+        </option>
+
+        <option value="Brezza">
+            Brezza - ₹2200/day
+        </option>
+
+        <option value="Creta">
+            Creta - ₹2500/day
+        </option>
+
+        <option value="Innova">
+            Innova - ₹3000/day
+        </option>
+
+    </select>
+
+
+    <!-- PRICE -->
+
+    <label for="price">Price Per Day</label>
+
+    <input
+        type="text"
+        id="price"
+        readonly
+    >
+
+
+    <label for="days">Total Days</label>
+
+    <input
+        type="text"
+        id="days"
+        readonly
+    >
+
+
+    <label for="total">Total Amount</label>
+
+    <input
+        type="text"
+        id="total"
+        readonly
+    >
+
+
+    <!-- DOCUMENTS -->
+
+    <label for="license">
+        Upload Driving Licence
+    </label>
+
+    <input
+        type="file"
+        id="license"
+        accept="image/*,.pdf"
+    >
+
+
+    <label for="aadhaar">
+        Upload Aadhaar (Optional)
+    </label>
+
+    <input
+        type="file"
+        id="aadhaar"
+        accept="image/*,.pdf"
+    >
+
+
+    <!-- BOOKING ID -->
+
+    <label for="bookingId">
+        Booking ID
+    </label>
+
+    <input
+        type="text"
+        id="bookingId"
+        readonly
+        placeholder="Generated after payment"
+    >
+
+
+    <!-- PAYMENT -->
+
+    <button
+        type="button"
+        onclick="startPayment()"
+    >
+        Pay Now
+    </button>
 
 </div>
 
+
 <footer>
-    <p>© 2026 GoRide. All Rights Reserved.</p>
+    <p>
+        © 2026 GoRide. All Rights Reserved.
+    </p>
 </footer>
 
 </body>
+
 </html>

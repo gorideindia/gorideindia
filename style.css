@@ -1,212 +1,401 @@
+```css
 /* ================================
-GO RIDE MODERN UI
+   GO RIDE MODERN UI
 ================================ */
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  font-family: "Segoe UI", sans-serif;
-  background: #f5f7fa;
-  color: #111;
+    font-family: "Segoe UI", sans-serif;
+    background: #f5f7fa;
+    color: #111;
 }
+
 
 /* ================================
-NAVBAR (PREMIUM)
-================================ */
-
-nav {
-  background: #020914;
-  display: flex;
-  justify-content: space-between;
-  padding: 15px 40px;
-  align-items: center;
-}
-
-nav a {
-  color: white;
-  margin: 0 12px;
-  text-decoration: none;
-  font-weight: 500;
-  transition: 0.3s;
-}
-
-nav a:hover {
-  color: #6ccf00;
-}
-
-/* ================================
-HEADER / HERO
+   HEADER
 ================================ */
 
 header {
-  background: linear-gradient(90deg, #020914, #0b1d3a);
-  color: white;
-  padding: 80px 40px;
+    background: linear-gradient(90deg, #020914, #0b1d3a);
+    color: white;
+    padding: 60px 40px;
+    text-align: center;
 }
 
 header h1 {
-  font-size: 60px;
-}
-
-header span {
-  color: #6ccf00;
+    font-size: 50px;
 }
 
 header p {
-  margin-top: 10px;
-  font-size: 20px;
-  color: #ccc;
+    margin-top: 10px;
+    font-size: 20px;
+    color: #ccc;
 }
 
-.hero-btn {
-  margin-top: 20px;
-}
-
-.hero-btn button {
-  margin-right: 10px;
-  padding: 12px 20px;
-  border-radius: 8px;
-  border: none;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.primary-btn {
-  background: #6ccf00;
-  color: black;
-}
-
-.secondary-btn {
-  background: transparent;
-  border: 1px solid #6ccf00;
-  color: white;
-}
 
 /* ================================
-CARDS
+   NAVBAR
+================================ */
+
+nav {
+    background: #020914;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 20px;
+    gap: 25px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    color: #6ccf00;
+}
+
+
+/* ================================
+   CARS SECTION
+================================ */
+
+.cars-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 25px 60px;
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+}
+
+.cars-container > h1 {
+    grid-column: 1 / -1;
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 32px;
+}
+
+
+/* ================================
+   CAR CARD
+================================ */
+
+.car-card {
+    background: white;
+    border-radius: 15px;
+    padding: 15px;
+
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+
+    display: flex;
+    flex-direction: column;
+
+    transition: 0.3s;
+}
+
+.car-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+
+/* ================================
+   CAR IMAGE
+================================ */
+
+.car-card img {
+    width: 100%;
+    height: 190px;
+
+    object-fit: contain;
+
+    display: block;
+
+    border-radius: 10px;
+
+    background: #f7f7f7;
+
+    margin-bottom: 12px;
+}
+
+
+/* ================================
+   CAR DETAILS
+================================ */
+
+.car-card h3 {
+    font-size: 20px;
+    margin: 5px 0 8px;
+}
+
+.car-card p {
+    margin: 4px 0;
+    color: #555;
+    font-size: 14px;
+}
+
+.car-card p:first-of-type {
+    color: #6ccf00;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+
+/* ================================
+   CARD BUTTONS
+================================ */
+
+.car-card a {
+    text-decoration: none;
+    margin-top: auto;
+}
+
+.car-card button {
+    width: 100%;
+    padding: 11px;
+
+    margin-top: 10px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #6ccf00;
+    color: #000;
+
+    font-weight: bold;
+    font-size: 14px;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.car-card button:hover {
+    background: #58ad00;
+}
+
+
+/* ================================
+   GENERAL CARDS
 ================================ */
 
 .card {
-  background: white;
-  padding: 20px;
-  border-radius: 14px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-  transition: 0.3s;
+    background: white;
+    padding: 20px;
+    border-radius: 14px;
+
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+
+    transition: 0.3s;
 }
 
 .card:hover {
-  transform: translateY(-5px);
+    transform: translateY(-5px);
 }
 
 .card img {
-  width: 100%;
-  border-radius: 10px;
+    width: 100%;
+    border-radius: 10px;
 }
 
 .card h3 {
-  margin-top: 10px;
+    margin-top: 10px;
 }
 
 .price {
-  color: #6ccf00;
-  font-weight: bold;
+    color: #6ccf00;
+    font-weight: bold;
 }
 
+
 /* ================================
-SECTION
+   SECTION
 ================================ */
 
 section {
-  padding: 40px;
-  text-align: center;
+    padding: 40px;
+    text-align: center;
 }
 
 section h2 {
-  margin-bottom: 20px;
-  font-size: 28px;
+    margin-bottom: 20px;
+    font-size: 28px;
 }
 
+
 /* ================================
-BOOKING FORM (FIXED ISSUE)
+   BOOKING FORM
 ================================ */
 
 .booking-form {
-  max-width: 500px;
-  margin: 40px auto;
-  background: white;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    max-width: 500px;
+    margin: 40px auto;
+
+    background: white;
+    padding: 30px;
+
+    border-radius: 15px;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
 .booking-form input,
 .booking-form select {
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+    width: 100%;
+
+    padding: 12px;
+    margin: 10px 0;
+
+    border-radius: 8px;
+    border: 1px solid #ccc;
 }
 
 .booking-form button {
-  width: 100%;
-  background: #6ccf00;
-  color: black;
-  padding: 12px;
-  border-radius: 8px;
-  border: none;
-  font-weight: bold;
+    width: 100%;
+
+    background: #6ccf00;
+    color: black;
+
+    padding: 12px;
+
+    border-radius: 8px;
+    border: none;
+
+    font-weight: bold;
+
+    cursor: pointer;
 }
 
+
 /* ================================
-FEATURE STRIP
+   FEATURE STRIP
 ================================ */
 
 .features-bar {
-  background: #020914;
-  color: white;
-  display: flex;
-  justify-content: space-around;
-  padding: 20px;
+    background: #020914;
+    color: white;
+
+    display: flex;
+    justify-content: space-around;
+
+    padding: 20px;
 }
 
+
 /* ================================
-FOOTER
+   FOOTER
 ================================ */
 
 footer {
-  background: #020914;
-  color: white;
-  padding: 40px;
-  text-align: center;
+    background: #020914;
+    color: white;
+
+    padding: 40px;
+
+    text-align: center;
 }
 
 footer a {
-  color: #6ccf00;
+    color: #6ccf00;
 }
 
+
 /* ================================
-BUTTON GLOBAL FIX
+   BUTTON
 ================================ */
 
 button {
-  cursor: pointer;
+    cursor: pointer;
 }
+
 
 /* ================================
-MOBILE
+   MOBILE
 ================================ */
 
-@media(max-width:768px){
-  header h1 {
-    font-size: 35px;
-  }
+@media (max-width: 1100px) {
 
-  nav {
-    flex-direction: column;
-  }
+    .cars-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
+
+
+@media (max-width: 768px) {
+
+    header {
+        padding: 40px 20px;
+    }
+
+    header h1 {
+        font-size: 35px;
+    }
+
+    nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .cars-container {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 25px 15px 40px;
+        gap: 15px;
+    }
+
+    .car-card img {
+        height: 160px;
+    }
+}
+
+
+@media (max-width: 500px) {
+
+    .cars-container {
+        grid-template-columns: 1fr;
+    }
+
+    .car-card img {
+        height: 200px;
+  
+    
+    }
+}
+/* =========================
+   GORIDE CARS PAGE
+========================= */
+
+.cars-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+}
+
+.cars-container > h1 {
+    grid-column: 1 / -1;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.cars-container .car-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.10);
+}
+
+
