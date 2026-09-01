@@ -66,7 +66,7 @@ if (
 }
 
 // =========================
-// MYSQL
+// MYSQL DATABASE
 // =========================
 
 let db = null;
@@ -76,23 +76,37 @@ if (
     process.env.DB_USER &&
     process.env.DB_NAME
 ) {
-    db = mysql.createConnection({
+
+    db = mysql.createPool({
         host: process.env.DB_HOST,
         user: process.env.DB_USER,
         password: process.env.DB_PASSWORD || "",
         database: process.env.DB_NAME,
-        port: Number(process.env.DB_PORT || 3306)
+        port: Number(process.env.DB_PORT || 3306),
+
+        waitForConnections: true,
+        connectionLimit: 10,
+        queueLimit: 0,
+
+        enableKeepAlive: true,
+        keepAliveInitialDelay: 0
     });
 
-    db.connect((err) => {
+    db.getConnection((err, connection) => {
+
         if (err) {
-            console.log("❌ MySQL Error:", err.message);
+            console.log("❌ MySQL Connection Error:", err.message);
         } else {
-            console.log("✅ MySQL Connected");
+            console.log("✅ MySQL Connected Successfully");
+            connection.release();
         }
+
     });
+
 } else {
+
     console.log("⚠️ MySQL environment variables not configured");
+
 }
 
 // =========================
@@ -910,3 +924,8 @@ if (require.main === module) {
 // =========================
 
 module.exports = app;
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log(`GoRide Server Started on port ${PORT}`);
+});

@@ -389,13 +389,12 @@ button {
     text-align: center;
     margin-bottom: 10px;
 }
-
 .cars-container .car-card {
     background: #ffffff;
     border-radius: 16px;
     padding: 15px;
     text-align: center;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.10);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.10);
 }
 
 
