@@ -113,9 +113,17 @@ if (
 // CARS
 // =========================
 
+// =========================
+// CARS
+// =========================
+
 app.get("/cars", (req, res) => {
 
+    console.log("🚗 /cars API called");
+
     if (!db) {
+        console.log("❌ Database object is NULL");
+
         return res.status(500).json({
             success: false,
             message: "Database not configured"
@@ -125,17 +133,21 @@ app.get("/cars", (req, res) => {
     db.query("SELECT * FROM cars", (err, result) => {
 
         if (err) {
-            console.log("Cars Error:", err.message);
+            console.log("❌ Cars Database Error:", err.message);
 
             return res.status(500).json({
                 success: false,
-                message: "Unable to load cars"
+                message: "Unable to load cars",
+                error: err.message
             });
         }
+
+        console.log("✅ Cars found:", result.length);
 
         res.json(result);
     });
 });
+
 
 // =========================
 // CREATE RAZORPAY ORDER
