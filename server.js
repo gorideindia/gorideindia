@@ -903,7 +903,6 @@ app.get("/invoice/:id", (req, res) => {
         }
     );
 });
-
 // =========================
 // LOCAL SERVER
 // =========================
@@ -916,23 +915,6 @@ if (require.main === module) {
         console.log(
             `GoRide Server Started on port ${PORT}`
         );
-    });
-}
-
-// =========================
-// VERCEL
-// =========================
-
-// =========================
-// LOCAL SERVER / RAILWAY
-// =========================
-
-if (require.main === module) {
-
-    const PORT = process.env.PORT || 3000;
-
-    app.listen(PORT, () => {
-        console.log(`GoRide Server Started on port ${PORT}`);
     });
 }
 
