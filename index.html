@@ -99,15 +99,19 @@ nav {
 ========================= */
 
 .hero {
-    min-height: 560px;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    padding: 70px 7%;
     background:
-        radial-gradient(circle at 75% 45%, rgba(44,255,0,0.18), transparent 32%),
-        linear-gradient(120deg, #020805, #061b0a 55%, #020805);
+    linear-gradient(
+        90deg,
+        rgba(0,0,0,0.92) 0%,
+        rgba(0,10,4,0.72) 42%,
+        rgba(0,10,4,0.18) 100%
+    ),
+    radial-gradient(
+        circle at 75% 45%,
+        rgba(44,255,0,0.18),
+        transparent 32%
+    ),
+    url("images/hero-car.png") center center / cover no-repeat;
 }
 
 .hero::before {
