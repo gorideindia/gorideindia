@@ -1,678 +1,854 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>GoRide | Self Drive Car Rental</title>
+<title>GoRide | Self Drive Car Rental</title>
 
-    <link rel="stylesheet" href="style.css">
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #020805;
+    color: #fff;
+}
 
-        body {
-            font-family: "Segoe UI", Arial, sans-serif;
-            background: #f5f7fa;
-            color: #111;
-        }
+/* =========================
+   NAVBAR
+========================= */
 
-        /* =========================
-           NAVBAR
-        ========================= */
+nav {
+    height: 76px;
+    background: #010403;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 6%;
+    border-bottom: 1px solid rgba(70,255,30,0.12);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
 
-        nav {
-            background: #06130d;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 16px 7%;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+.logo {
+    font-size: 29px;
+    font-weight: 800;
+    color: white;
+}
 
-        .logo {
-            font-size: 28px;
-            font-weight: 800;
-            color: #21c45b;
-        }
+.logo span {
+    color: #39e600;
+}
 
-        .nav-links {
-            display: flex;
-            gap: 25px;
-            align-items: center;
-        }
+.logo small {
+    display: block;
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: #aaa;
+    margin-top: -4px;
+}
 
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-        }
+.nav-links {
+    display: flex;
+    gap: 35px;
+    align-items: center;
+}
 
-        .nav-links a:hover {
-            color: #21c45b;
-        }
+.nav-links a {
+    color: #eee;
+    text-decoration: none;
+    font-size: 15px;
+    transition: 0.3s;
+}
 
-        /* =========================
-           HERO
-        ========================= */
+.nav-links a:hover {
+    color: #43ed18;
+}
 
-        .hero {
-            min-height: 580px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 80px 20px;
-            background:
-                linear-gradient(
-                    rgba(3, 15, 9, 0.82),
-                    rgba(3, 15, 9, 0.82)
-                ),
-                url("images/hero.jpg") center/cover no-repeat;
-        }
+.nav-buttons {
+    display: flex;
+    gap: 12px;
+}
 
-        .hero-content {
-            max-width: 850px;
-            color: white;
-        }
+.login-btn,
+.book-btn {
+    padding: 11px 23px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+}
 
-        .hero h1 {
-            font-size: clamp(42px, 7vw, 78px);
-            line-height: 1.05;
-            margin-bottom: 20px;
-            font-weight: 900;
-        }
+.login-btn {
+    border: 1px solid #555;
+    color: white;
+}
 
-        .hero h1 span {
-            color: #21c45b;
-        }
+.book-btn {
+    background: #43e817;
+    color: #031000;
+}
 
-        .hero p {
-            font-size: 22px;
-            margin-bottom: 35px;
-            color: #e8e8e8;
-        }
+/* =========================
+   HERO
+========================= */
 
-        .hero-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
+.hero {
+    min-height: 560px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    padding: 70px 7%;
+    background:
+        radial-gradient(circle at 75% 45%, rgba(44,255,0,0.18), transparent 32%),
+        linear-gradient(120deg, #020805, #061b0a 55%, #020805);
+}
 
-        .btn {
-            display: inline-block;
-            padding: 15px 30px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 17px;
-        }
+.hero::before {
+    content: "";
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    right: -180px;
+    top: -150px;
+    border: 1px solid rgba(55,255,20,0.18);
+    transform: rotate(35deg);
+    box-shadow:
+        0 0 0 80px rgba(50,255,20,0.025),
+        0 0 0 160px rgba(50,255,20,0.02);
+}
 
-        .btn-primary {
-            background: #21c45b;
-            color: white;
-        }
+.hero::after {
+    content: "";
+    position: absolute;
+    width: 450px;
+    height: 450px;
+    right: 80px;
+    bottom: -260px;
+    background: rgba(47,255,15,0.12);
+    filter: blur(100px);
+}
 
-        .btn-secondary {
-            border: 2px solid white;
-            color: white;
-        }
+.hero-content {
+    max-width: 720px;
+    position: relative;
+    z-index: 2;
+}
 
-        .btn:hover {
-            transform: translateY(-2px);
-        }
+.hero-label {
+    color: #48ef20;
+    font-size: 15px;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
 
-        /* =========================
-           SECTION
-        ========================= */
+.hero h1 {
+    font-size: clamp(50px, 7vw, 86px);
+    line-height: 0.98;
+    margin-bottom: 25px;
+    font-weight: 800;
+}
 
-        .section {
-            max-width: 1200px;
-            margin: auto;
-            padding: 70px 20px;
-        }
+.hero h1 span {
+    color: #42e817;
+}
 
-        .section-title {
-            text-align: center;
-            margin-bottom: 40px;
-        }
+.hero p {
+    color: #c5c5c5;
+    font-size: 19px;
+    line-height: 1.6;
+    max-width: 580px;
+}
 
-        .section-title h2 {
-            font-size: 38px;
-            margin-bottom: 10px;
-        }
+.hero-buttons {
+    margin-top: 35px;
+    display: flex;
+    gap: 18px;
+}
 
-        .section-title p {
-            color: #666;
-        }
+.hero-primary,
+.hero-secondary {
+    padding: 15px 28px;
+    border-radius: 7px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 15px;
+}
 
-        /* =========================
-           CARS
-        ========================= */
+.hero-primary {
+    background: #42e817;
+    color: #031000;
+}
 
-        #homeCars {
-            display: grid;
-            grid-template-columns: repeat(
-                auto-fit,
-                minmax(270px, 1fr)
-            );
-            gap: 25px;
-        }
+.hero-secondary {
+    border: 1px solid #777;
+    color: white;
+}
 
-        .home-car-card {
-            background: white;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.10);
-            transition: 0.3s;
-        }
+.hero-primary:hover {
+    background: #5bff32;
+}
 
-        .home-car-card:hover {
-            transform: translateY(-6px);
-        }
+/* =========================
+   TRUST BAR
+========================= */
 
-        .home-car-card img {
-            width: 100%;
-            height: 210px;
-            object-fit: cover;
-            display: block;
-        }
+.trust-bar {
+    position: relative;
+    z-index: 5;
+    margin: -30px auto 0;
+    width: 86%;
+    background: rgba(5,18,10,0.96);
+    border: 1px solid rgba(70,255,30,0.14);
+    border-radius: 12px;
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    padding: 22px;
+}
 
-        .car-info {
-            padding: 20px;
-        }
+.trust-item {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 8px 20px;
+    border-right: 1px solid rgba(255,255,255,0.12);
+}
 
-        .car-info h3 {
-            font-size: 21px;
-            margin-bottom: 8px;
-        }
+.trust-item:last-child {
+    border-right: none;
+}
 
-        .car-type {
-            color: #666;
-            margin-bottom: 10px;
-        }
+.trust-icon {
+    color: #43e817;
+    font-size: 25px;
+}
 
-        .car-price {
-            font-size: 20px;
-            font-weight: 800;
-            margin-bottom: 15px;
-        }
+.trust-item strong {
+    display: block;
+    font-size: 14px;
+}
 
-        .book-btn {
-            width: 100%;
-            border: none;
-            background: #0b8f3c;
-            color: white;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: 700;
-            cursor: pointer;
-        }
+.trust-item small {
+    color: #aaa;
+    font-size: 11px;
+}
 
-        .book-btn:hover {
-            background: #087330;
-        }
+/* =========================
+   CARS
+========================= */
 
-        .view-all {
-            text-align: center;
-            margin-top: 35px;
-        }
+.cars-section {
+    padding: 90px 7%;
+}
 
-        /* =========================
-           WHY GORIDE
-        ========================= */
+.section-label {
+    color: #42e817;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
 
-        .features {
-            display: grid;
-            grid-template-columns: repeat(
-                auto-fit,
-                minmax(220px, 1fr)
-            );
-            gap: 20px;
-        }
+.section-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    margin-bottom: 30px;
+}
 
-        .feature {
-            background: white;
-            padding: 30px 20px;
-            text-align: center;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
-        }
+.section-title {
+    font-size: 40px;
+    margin-top: 8px;
+}
 
-        .feature-icon {
-            font-size: 42px;
-            margin-bottom: 15px;
-        }
+.section-subtitle {
+    color: #aaa;
+    margin-top: 8px;
+}
 
-        .feature h3 {
-            margin-bottom: 10px;
-        }
+.view-all {
+    color: white;
+    border: 1px solid #555;
+    padding: 11px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+}
 
-        .feature p {
-            color: #666;
-            line-height: 1.6;
-        }
+.cars-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+}
 
-        /* =========================
-           CTA
-        ========================= */
+.car-card {
+    background: #07100a;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: 0.3s;
+}
 
-        .cta {
-            background: #06130d;
-            color: white;
-            text-align: center;
-            padding: 70px 20px;
-        }
+.car-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(66,232,23,0.45);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.35);
+}
 
-        .cta h2 {
-            font-size: 40px;
-            margin-bottom: 15px;
-        }
+.car-image {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    background: #111;
+}
 
-        .cta p {
-            color: #ccc;
-            margin-bottom: 25px;
-            font-size: 18px;
-        }
+.car-info {
+    padding: 18px;
+}
 
-        /* =========================
-           FOOTER
-        ========================= */
+.car-name {
+    font-size: 19px;
+    font-weight: 700;
+}
 
-        footer {
-            background: #020705;
-            color: #aaa;
-            text-align: center;
-            padding: 25px;
-        }
+.car-type {
+    color: #999;
+    font-size: 13px;
+    margin-top: 5px;
+}
 
-        /* =========================
-           MOBILE
-        ========================= */
+.car-price {
+    margin-top: 15px;
+    font-size: 18px;
+    font-weight: 700;
+}
 
-        @media (max-width: 700px) {
+.car-price span {
+    color: #42e817;
+    font-size: 13px;
+}
 
-            nav {
-                padding: 14px 20px;
-                flex-direction: column;
-                gap: 12px;
-            }
+.car-book {
+    width: 100%;
+    margin-top: 15px;
+    border: none;
+    padding: 12px;
+    background: #42e817;
+    color: #031000;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+}
 
-            .nav-links {
-                gap: 15px;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
+.car-book:hover {
+    background: #5aff37;
+}
 
-            .hero {
-                min-height: 500px;
-            }
+/* =========================
+   FEATURES
+========================= */
 
-            .hero p {
-                font-size: 18px;
-            }
+.features {
+    padding: 0 7% 90px;
+}
 
-            .section-title h2 {
-                font-size: 30px;
-            }
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 15px;
+}
 
-            .cta h2 {
-                font-size: 30px;
-            }
-        }
-    </style>
+.feature {
+    background: #07100a;
+    border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 12px;
+    padding: 25px;
+}
+
+.feature-icon {
+    font-size: 28px;
+    color: #42e817;
+    margin-bottom: 15px;
+}
+
+.feature h3 {
+    margin-bottom: 8px;
+}
+
+.feature p {
+    color: #999;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* =========================
+   CTA
+========================= */
+
+.cta {
+    margin: 0 7% 80px;
+    padding: 60px;
+    text-align: center;
+    border-radius: 15px;
+    background:
+        radial-gradient(circle, rgba(55,255,20,0.15), transparent 55%),
+        #07140a;
+    border: 1px solid rgba(66,232,23,0.18);
+}
+
+.cta h2 {
+    font-size: 40px;
+    margin-bottom: 12px;
+}
+
+.cta p {
+    color: #aaa;
+    margin-bottom: 25px;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    background: #010403;
+    padding: 35px 7%;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    text-align: center;
+    color: #777;
+    font-size: 13px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:1000px) {
+
+    .cars-grid {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .features-grid {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .trust-bar {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .trust-item:nth-child(2) {
+        border-right: none;
+    }
+}
+
+@media(max-width:700px) {
+
+    nav {
+        padding: 0 5%;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .logo {
+        font-size: 23px;
+    }
+
+    .hero {
+        min-height: 520px;
+        padding: 55px 6%;
+    }
+
+    .hero h1 {
+        font-size: 52px;
+    }
+
+    .hero p {
+        font-size: 16px;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .trust-bar {
+        width: 90%;
+        grid-template-columns: 1fr;
+    }
+
+    .trust-item {
+        border-right: none;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .trust-item:last-child {
+        border-bottom: none;
+    }
+
+    .cars-grid,
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .section-title-row {
+        display: block;
+    }
+
+    .view-all {
+        display: inline-block;
+        margin-top: 15px;
+    }
+
+    .cta {
+        padding: 40px 20px;
+    }
+
+    .cta h2 {
+        font-size: 30px;
+    }
+}
+</style>
 </head>
 
 <body>
 
-    <!-- =========================
-         NAVBAR
-    ========================= -->
+<!-- =========================
+     NAVBAR
+========================= -->
 
-    <nav>
+<nav>
 
-        <div class="logo">
-            GoRide 🚗
+    <div class="logo">
+        Go<span>Ride</span>
+        <small>SELF DRIVE CAR RENTAL</small>
+    </div>
+
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="cars.html">Cars</a>
+        <a href="booking.html">Booking</a>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact</a>
+    </div>
+
+    <div class="nav-buttons">
+        <a href="login.html" class="login-btn">Login</a>
+        <a href="booking.html" class="book-btn">Book Now</a>
+    </div>
+
+</nav>
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="hero-label">
+            SELF DRIVE CAR RENTAL
         </div>
 
-        <div class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="cars.html">Cars</a>
-            <a href="booking.html">Booking</a>
-            <a href="login.html">Login</a>
-        </div>
+        <h1>
+            Drive Freely,<br>
+            <span>Live Fully.</span>
+        </h1>
 
-    </nav>
+        <p>
+            Premium self-drive cars for every journey.
+            Your car. Your road. Your freedom.
+        </p>
 
+        <div class="hero-buttons">
 
-    <!-- =========================
-         HERO
-    ========================= -->
+            <a href="booking.html" class="hero-primary">
+                Book Your Ride →
+            </a>
 
-    <section class="hero">
-
-        <div class="hero-content">
-
-            <h1>
-                Drive <span>Freely.</span><br>
-                Live Fully.
-            </h1>
-
-            <p>
-                Premium Self-Drive Cars for Every Journey
-            </p>
-
-            <div class="hero-buttons">
-
-                <a href="cars.html" class="btn btn-primary">
-                    Explore Cars 🚗
-                </a>
-
-                <a href="booking.html" class="btn btn-secondary">
-                    Book Your Ride
-                </a>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================
-         AVAILABLE CARS
-    ========================= -->
-
-    <section class="section">
-
-        <div class="section-title">
-
-            <h2>Available Cars</h2>
-
-            <p>
-                Choose your car and start your journey.
-            </p>
-
-        </div>
-
-        <div id="homeCars">
-
-            <p style="text-align:center;">
-                Loading cars...
-            </p>
-
-        </div>
-
-        <div class="view-all">
-
-            <a href="cars.html" class="btn btn-primary">
-                View All Cars →
+            <a href="cars.html" class="hero-secondary">
+                Browse Cars →
             </a>
 
         </div>
 
-    </section>
+    </div>
+
+</section>
 
 
-    <!-- =========================
-         WHY GORIDE
-    ========================= -->
+<!-- =========================
+     TRUST BAR
+========================= -->
 
-    <section class="section">
+<div class="trust-bar">
 
-        <div class="section-title">
+    <div class="trust-item">
+        <div class="trust-icon">🛡</div>
+        <div>
+            <strong>Safety First</strong>
+            <small>GPS & Dashcam</small>
+        </div>
+    </div>
 
-            <h2>Why Choose GoRide?</h2>
+    <div class="trust-item">
+        <div class="trust-icon">🚘</div>
+        <div>
+            <strong>Well Maintained</strong>
+            <small>Quality Cars</small>
+        </div>
+    </div>
 
-            <p>
-                Your journey. Your car. Your freedom.
+    <div class="trust-item">
+        <div class="trust-icon">₹</div>
+        <div>
+            <strong>Best Price</strong>
+            <small>Transparent Pricing</small>
+        </div>
+    </div>
+
+    <div class="trust-item">
+        <div class="trust-icon">☎</div>
+        <div>
+            <strong>24/7 Support</strong>
+            <small>We're Always Here</small>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- =========================
+     AVAILABLE CARS
+========================= -->
+
+<section class="cars-section">
+
+    <div class="section-title-row">
+
+        <div>
+            <div class="section-label">
+                CHOOSE YOUR RIDE
+            </div>
+
+            <h2 class="section-title">
+                Available Cars
+            </h2>
+
+            <p class="section-subtitle">
+                Choose from our well-maintained cars
             </p>
-
         </div>
 
-        <div class="features">
-
-            <div class="feature">
-
-                <div class="feature-icon">🚗</div>
-
-                <h3>Self Drive</h3>
-
-                <p>
-                    Drive your way with complete freedom
-                    and privacy.
-                </p>
-
-            </div>
-
-
-            <div class="feature">
-
-                <div class="feature-icon">🛡️</div>
-
-                <h3>Safety First</h3>
-
-                <p>
-                    GPS tracking and modern safety systems
-                    for every journey.
-                </p>
-
-            </div>
-
-
-            <div class="feature">
-
-                <div class="feature-icon">📹</div>
-
-                <h3>Dashcam</h3>
-
-                <p>
-                    Selected vehicles equipped with
-                    dashcam technology.
-                </p>
-
-            </div>
-
-
-            <div class="feature">
-
-                <div class="feature-icon">💚</div>
-
-                <h3>Trusted Service</h3>
-
-                <p>
-                    Simple booking, transparent pricing
-                    and customer-focused service.
-                </p>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================
-         CTA
-    ========================= -->
-
-    <section class="cta">
-
-        <h2>
-            Ready to Drive?
-        </h2>
-
-        <p>
-            Your next adventure starts with GoRide.
-        </p>
-
-        <a href="cars.html" class="btn btn-primary">
-            Find Your Car 🚗
+        <a href="cars.html" class="view-all">
+            View All Cars →
         </a>
 
-    </section>
+    </div>
 
 
-    <!-- =========================
-         FOOTER
-    ========================= -->
+    <div id="homeCars" class="cars-grid">
 
-    <footer>
+        <p>Loading cars...</p>
 
-        <p>
-            © 2026 GoRide. All Rights Reserved.
-        </p>
+    </div>
 
-        <p style="margin-top:8px;">
-            Drive Freely, Live Fully.
-        </p>
-
-    </footer>
+</section>
 
 
-    <!-- =========================
-         DATABASE / API
-    ========================= -->
+<!-- =========================
+     FEATURES
+========================= -->
 
-    <script>
+<section class="features">
 
-        const API_URL =
-            "https://gorideindia-production.up.railway.app";
+    <div class="features-grid">
 
-        async function loadHomeCars() {
+        <div class="feature">
+            <div class="feature-icon">🚗</div>
+            <h3>Self Drive Freedom</h3>
+            <p>
+                Drive your car your way, on your own terms.
+            </p>
+        </div>
 
-            const container =
-                document.getElementById("homeCars");
+        <div class="feature">
+            <div class="feature-icon">🛡</div>
+            <h3>No Hidden Charges</h3>
+            <p>
+                Transparent pricing with clear rental costs.
+            </p>
+        </div>
 
-            try {
+        <div class="feature">
+            <div class="feature-icon">📅</div>
+            <h3>Easy Booking</h3>
+            <p>
+                Quick and simple booking process.
+            </p>
+        </div>
 
-                const response =
-                    await fetch(`${API_URL}/cars`);
+        <div class="feature">
+            <div class="feature-icon">👥</div>
+            <h3>Trusted Service</h3>
+            <p>
+                Customer-focused service from GoRide.
+            </p>
+        </div>
 
-                if (!response.ok) {
-                    throw new Error("Cars API failed");
-                }
+    </div>
 
-                const cars =
-                    await response.json();
+</section>
 
-                console.log(
-                    "Home cars:",
-                    cars
-                );
 
-                if (!cars.length) {
+<!-- =========================
+     CTA
+========================= -->
 
-                    container.innerHTML = `
-                        <p style="text-align:center;">
-                            No cars available.
-                        </p>
-                    `;
+<section class="cta">
 
-                    return;
-                }
+    <h2>
+        Ready to Drive?
+    </h2>
 
-                container.innerHTML = "";
+    <p>
+        Choose your car and start your journey with GoRide.
+    </p>
 
-                cars.forEach(car => {
+    <a href="cars.html" class="hero-primary">
+        Explore Cars →
+    </a>
 
-                    const imageURL =
-                        car.image
-                            ? `${API_URL}/${car.image}`
-                            : `${API_URL}/images/default-car.jpg`;
+</section>
 
-                    const card =
-                        document.createElement("div");
 
-                    card.className =
-                        "home-car-card";
+<!-- =========================
+     FOOTER
+========================= -->
 
-                    card.innerHTML = `
+<footer>
 
-                        <img
-                            src="${imageURL}"
-                            alt="${car.name}"
-                            onerror="
-                                this.src='${API_URL}/images/default-car.jpg'
-                            "
-                        >
+    © 2026 GoRide — Drive Freely, Live Fully.
 
-                        <div class="car-info">
+</footer>
 
-                            <h3>
-                                ${car.name}
-                            </h3>
 
-                            <p class="car-type">
-                                ${car.type || "Self Drive"}
-                            </p>
+<!-- =========================
+     DATABASE CARS
+========================= -->
 
-                            <p class="car-price">
-                                ₹${Number(car.price)
-                                    .toLocaleString("en-IN")}
-                                / Day
-                            </p>
+<script>
 
-                            <button
-                                class="book-btn"
-                                onclick="
-                                    bookCar('${car.name}')
-                                "
-                            >
-                                Book Now
-                            </button>
+const API_URL =
+"https://gorideindia-production.up.railway.app";
 
-                        </div>
-                    `;
+async function loadHomeCars() {
 
-                    container.appendChild(card);
+    const container =
+        document.getElementById("homeCars");
 
-                });
+    try {
 
-            } catch (error) {
+        const response =
+            await fetch(API_URL + "/cars");
 
-                console.error(
-                    "Home cars error:",
-                    error
-                );
+        const cars =
+            await response.json();
 
-                container.innerHTML = `
-                    <p style="
-                        text-align:center;
-                        color:red;
-                    ">
-                        Unable to load cars.
-                    </p>
-                `;
-            }
+        if (!cars || cars.length === 0) {
+
+            container.innerHTML =
+                "<p>No cars available.</p>";
+
+            return;
         }
 
+        container.innerHTML = "";
 
-        function bookCar(carName) {
+        cars.forEach(car => {
 
-            localStorage.setItem(
-                "selectedCar",
-                carName
-            );
+            const card =
+                document.createElement("div");
 
-            window.location.href =
-                "booking.html";
-        }
+            card.className = "car-card";
+
+            const image =
+                API_URL + "/" + car.image;
+
+            card.innerHTML = `
+
+                <img
+                    src="${image}"
+                    alt="${car.name}"
+                    class="car-image"
+                    onerror="this.src='images/placeholder.jpg'"
+                >
+
+                <div class="car-info">
+
+                    <div class="car-name">
+                        ${car.name}
+                    </div>
+
+                    <div class="car-type">
+                        ${car.type}
+                    </div>
+
+                    <div class="car-price">
+                        ₹${car.price}
+                        <span>/ Day</span>
+                    </div>
+
+                    <button
+                        class="car-book"
+                        onclick="bookCar(${car.id})">
+                        Book Now
+                    </button>
+
+                </div>
+            `;
+
+            container.appendChild(card);
+
+        });
+
+    } catch (error) {
+
+        console.error(
+            "Cars Loading Error:",
+            error
+        );
+
+        container.innerHTML =
+            "<p>Unable to load cars.</p>";
+    }
+}
 
 
-        loadHomeCars();
+function bookCar(carId) {
 
-    </script>
+    localStorage.setItem(
+        "selectedCarId",
+        carId
+    );
+
+    window.location.href =
+        "booking.html";
+}
+
+
+loadHomeCars();
+
+</script>
 
 </body>
-
 </html>
