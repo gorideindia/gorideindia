@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,6 +8,91 @@
     <title>GoRide - Available Cars</title>
 
     <link rel="stylesheet" href="style.css">
+
+    <style>
+        .cars-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .cars-container > h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        #carsList {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .car-card {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.10);
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .car-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .car-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+            display: block;
+        }
+
+        .car-card h3 {
+            margin: 15px 0 8px;
+            font-size: 21px;
+        }
+
+        .car-card p {
+            margin: 6px 0;
+        }
+
+        .car-card .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .car-card button {
+            flex: 1;
+            padding: 11px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .view-btn {
+            background: #e8f5e9;
+        }
+
+        .book-btn {
+            background: #0b8f3c;
+            color: white;
+        }
+
+        .loading {
+            text-align: center;
+            font-size: 20px;
+            padding: 40px;
+        }
+
+        .error {
+            text-align: center;
+            color: red;
+            padding: 40px;
+        }
+    </style>
 </head>
 
 <body>
@@ -29,440 +113,13 @@
 
     <h1>Available Cars</h1>
 
-
-    <!-- Hyundai i20 -->
-    <div class="car-card">
-        <img src="images/i20.jpg" alt="Hyundai i20">
-
-        <h3>Hyundai i20</h3>
-        <p>₹1900 / Day</p>
-        <p>5 Seats | Petrol | Manual</p>
-
-        <a href="cardetails.html?car=i20">
-            <button>View Details</button>
-        </a>
-
-        <button onclick="bookCar('Hyundai i20')">
-            Book Now
-        </button>
-    </div>
-
-
-    <!-- Maruti Swift -->
-    <div class="car-card">
-        <img src="images/swift.jpg" alt="Maruti Swift">
-
-        <h3>Maruti Swift</h3>
-        <p>₹1800 / Day</p>
-        <p>5 Seats | Petrol | Manual</p>
-
-        <a href="cardetails.html?car=swift">
-            <button>View Details</button>
-        </a>
-
-        <button onclick="bookCar('Maruti Swift')">
-            Book Now
-        </button>
-    </div>
-
-
-    <!-- Maruti Baleno -->
-    <div class="car-card">
-        <img src="images/baleno.jpg" alt="Maruti Baleno">
-
-        <h3>Maruti Baleno</h3>
-        <p>₹1900 / Day</p>
-        <p>5 Seats | Petrol | Manual</p>
-
-        <a href="cardetails.html?car=baleno">
-            <button>View Details</button>
-        </a>
-
-        <button onclick="bookCar('Maruti Baleno')">
-            Book Now
-        </button>
-    </div>
-
-
-    <!-- Tata Altroz -->
-    <div class="car-card">
-        <img src="images/altroz.jpg" alt="Tata Altroz">
-
-        <h3>Tata Altroz</h3>
-        <p>₹1900 / Day</p>
-        <p>5 Seats | Petrol | Manual</p>
-
-        <a href="cardetails.html?car=altroz">
-            <button>View Details</button>
-        </a>
-
-        <button onclick="bookCar('Tata Altroz')">
-            Book Now
-        </button>
-    </div>
-
-
-    <!-- Tata Punch -->
-    <div class="car-card">
-        <img src="images/punch.jpg" alt="Tata Punch">
-
-        <h3>Tata Punch</h3>
-        <p>₹1900 / Day</p>
-        <p>5 Seats | Petrol | Manual</p>
-
-        <a href="cardetails.html?car=punch">
-            <button>View Details</button>
-        </a>
-
-        <button onclick="bookCar('Tata Punch')">
-            Book Now
-        </button>
-    </div>
-
-
-    <!-- Tata Tiago -->
-    <div class="car-card">
-        <img src="images/tiago.jpg" alt="Tata Tiago">
-
-        <h3>Tata Tiago</h3>
-        <p>₹1800 / Day</p>
-        <p>5 Seats | Petrol | Manual</p>
-
-        <a href="cardetails.html?car=tiago">
-            <button>View Details</button>
-        </a>
-
-        <button onclick="bookCar('Tata Tiago')">
-            Book Now
-        </button>
-    </div>
-
-
-    <!-- Maruti WagonR -->
-    <div class="car-card">
-        <img src="images/wagonr.jpg" alt="Maruti WagonR">
-
-        <h3>Maruti WagonR</h3>
-        <p>₹1700 / Day</p>
-        <p>5 Seats | Petrol | Manual</p>
-
-        <a href="cardetails.html?car=wagonr">
-            <button>View Details</button>
-        </a>
-
-        <button onclick="bookCar('Maruti WagonR')">
-            Book Now
-        </button>
-    </div>
-
-
-    <!-- Maruti Brezza -->
-    <div class="car-card">
-        <img src="images/Brezza.jpg" alt="Maruti Brezza">
-
-        <h3>Maruti Brezza</h3>
-        <p>₹2200 / Day</p>
-        <p>5 Seats | Petrol | Manual</p>
-
-        <a href="cardetails.html?car=brezza">
-            <button>View Details</button>
-        </a>
-
-        <button onclick="bookCar('Maruti Brezza')">
-            Book Now
-        </button>
-    </div>
-
-
-    <!-- Tata Nexon -->
-    <div class="car-card">
-        <img src="images/nexon.jpg" alt="Tata Nexon">
-
-        <h3>Tata Nexon</h3>
-        <p>₹2200 / Day</p>
-        <p>5 Seats | Petrol/Diesel | Manual</p>
-
-        <a href="cardetails.html?car=nexon">
-            <button>View Details</button>
-        </a>
-
-        <button onclick="bookCar('Tata Nexon')">
-            Book Now
-        </button>
-    </div>
-
-
-    <!-- Hyundai Venue -->
-    <div class="car-card">
-        <img src="images/venue.jpg" alt="Hyundai Venue">
-
-        <h3>Hyundai Venue</h3>
-        <p>₹2300 / Day</p>
-        <p>5 Seats | Petrol | Manual</p>
-
-        <a href="cardetails.html?car=venue">
-            <button>View Details</button>
-        </a>
-
-        <button onclick="bookCar('Hyundai Venue')">
-            Book Now
-        </button>
-    </div>
-
-
-    <!-- Kia Sonet -->
-    <div class="car-card">
-        <img src="images/sonet.jpg" alt="Kia Sonet">
-
-        <h3>Kia Sonet</h3>
-        <p>₹2300 / Day</p>
-        <p>5 Seats | Petrol | Automatic</p>
-
-        <a href="cardetails.html?car=sonet">
-            <button>View Details</button>
-        </a>
-
-        <button onclick="bookCar('Kia Sonet')">
-            Book Now
-        </button>
-    </div>
-
-
-    <!-- Hyundai Creta -->
-    <div class="car-card">
-        <img src="images/creta.jpg" alt="Hyundai Creta">
-
-        <h3>Hyundai Creta</h3>
-        <p>₹2500 / Day</p>
-        <p>5 Seats | Petrol | Automatic</p>
-
-        <a href="cardetails.html?car=creta">
-            <button>View Details</button>
-        </a>
-
-        <button onclick="bookCar('Hyundai Creta')">
-            Book Now
-        </button>
-    </div>
-
-
-    <!-- Kia Seltos -->
-    <div class="car-card">
-        <img src="images/seltos.jpg" alt="Kia Seltos">
-
-        <h3>Kia Seltos</h3>
-        <p>₹2500 / Day</p>
-        <p>5 Seats | Petrol | Automatic</p>
-
-        <a href="cardetails.html?car=seltos">
-            <button>View Details</button>
-        </a>
-
-        <button onclick="bookCar('Kia Seltos')">
-            Book Now
-        </button>
-    </div>
-
-
-    <!-- Grand Vitara -->
-    <div class="car-card">
-        <img src="images/grandvitara.jpg" alt="Grand Vitara">
-
-        <h3>Grand Vitara</h3>
-        <p>₹2600 / Day</p>
-        <p>5 Seats | Petrol | Automatic</p>
-
-        <a href="cardetails.html?car=grandvitara">
-            <button>View Details</button>
-        </a>
-
-        <button onclick="bookCar('Grand Vitara')">
-            Book Now
-        </button>
-    </div>
-
-
-    <!-- Mahindra Scorpio N -->
-    <div class="car-card">
-        <img src="images/scorpion.jpg" alt="Mahindra Scorpio N">
-
-        <h3>Mahindra Scorpio N</h3>
-        <p>₹3000 / Day</p>
-        <p>7 Seats | Diesel | Manual</p>
-
-        <a href="cardetails.html?car=scorpion">
-            <button>View Details</button>
-        </a>
-
-        <button onclick="bookCar('Mahindra Scorpio N')">
-            Book Now
-        </button>
-    </div>
-
-
-    <!-- Mahindra XUV700 -->
-    <div class="car-card">
-        <img src="images/xuv700.jpg" alt="Mahindra XUV700">
-
-        <h3>Mahindra XUV700</h3>
-        <p>₹3200 / Day</p>
-        <p>7 Seats | Diesel | Automatic</p>
-
-        <a href="cardetails.html?car=xuv700">
-            <button>View Details</button>
-        </a>
-
-        <button onclick="bookCar('Mahindra XUV700')">
-            Book Now
-        </button>
-    </div>
-
-
-    <!-- Maruti Ertiga -->
-    <div class="car-card">
-        <img src="images/ertiga.jpg" alt="Maruti Ertiga">
-
-        <h3>Maruti Ertiga</h3>
-        <p>₹2500 / Day</p>
-        <p>7 Seats | Petrol | Manual</p>
-
-        <a href="cardetails.html?car=ertiga">
-            <button>View Details</button>
-        </a>
-
-        <button onclick="bookCar('Maruti Ertiga')">
-            Book Now
-        </button>
-    </div>
-
-
-    <!-- Toyota Innova Crysta -->
-    <div class="car-card">
-        <img src="images/innova-crysta.jpg" alt="Toyota Innova Crysta">
-
-        <h3>Toyota Innova Crysta</h3>
-        <p>₹3500 / Day</p>
-        <p>7 Seats | Diesel | Manual</p>
-
-        <a href="cardetails.html?car=innovacrysta">
-            <button>View Details</button>
-        </a>
-
-        <button onclick="bookCar('Toyota Innova Crysta')">
-            Book Now
-        </button>
-    </div>
-
-
-    <!-- Toyota Innova Hycross -->
-    <div class="car-card">
-        <img src="images/hycross.jpg" alt="Toyota Innova Hycross">
-
-        <h3>Toyota Innova Hycross</h3>
-        <p>₹4000 / Day</p>
-        <p>7 Seats | Hybrid | Automatic</p>
-
-        <a href="cardetails.html?car=hycross">
-            <button>View Details</button>
-        </a>
-
-        <button onclick="bookCar('Toyota Innova Hycross')">
-            Book Now
-        </button>
-    </div>
-
-
-    <!-- Mahindra Thar -->
-    <div class="car-card">
-        <img src="images/thar.jpg" alt="Mahindra Thar">
-
-        <h3>Mahindra Thar</h3>
-        <p>₹3200 / Day</p>
-        <p>4 Seats | Diesel | Manual</p>
-
-        <a href="cardetails.html?car=thar">
-            <button>View Details</button>
-        </a>
-
-        <button onclick="bookCar('Mahindra Thar')">
-            Book Now
-        </button>
-    </div>
-
-
-    <!-- Honda City -->
-    <div class="car-card">
-        <img src="images/city.jpg" alt="Honda City">
-
-        <h3>Honda City</h3>
-        <p>₹2500 / Day</p>
-        <p>5 Seats | Petrol | Automatic</p>
-
-        <a href="cardetails.html?car=city">
-            <button>View Details</button>
-        </a>
-
-        <button onclick="bookCar('Honda City')">
-            Book Now
-        </button>
-    </div>
-
-
-    <!-- Hyundai Verna -->
-    <div class="car-card">
-        <img src="images/verna.jpg" alt="Hyundai Verna">
-
-        <h3>Hyundai Verna</h3>
-        <p>₹2600 / Day</p>
-        <p>5 Seats | Petrol | Automatic</p>
-
-        <a href="cardetails.html?car=verna">
-            <button>View Details</button>
-        </a>
-
-        <button onclick="bookCar('Hyundai Verna')">
-            Book Now
-        </button>
-    </div>
-
-
-    <!-- Volkswagen Virtus -->
-    <div class="car-card">
-        <img src="images/virtus.jpg" alt="Volkswagen Virtus">
-
-        <h3>Volkswagen Virtus</h3>
-        <p>₹2700 / Day</p>
-        <p>5 Seats | Petrol | Automatic</p>
-
-        <a href="cardetails.html?car=virtus">
-            <button>View Details</button>
-        </a>
-
-        <button onclick="bookCar('Volkswagen Virtus')">
-            Book Now
-        </button>
-    </div>
-
-
-    <!-- Premium -->
-    <div class="car-card">
-        <img src="images/bmw.jpg" alt="BMW / Mercedes">
-
-        <h3>BMW / Mercedes</h3>
-        <p>₹7000 / Day</p>
-        <p>Luxury | Automatic</p>
-
-        <a href="cardetails.html?car=premium">
-            <button>View Details</button>
-        </a>
-
-        <button onclick="bookCar('BMW / Mercedes')">
-            Book Now
-        </button>
+    <div id="carsList">
+        <div class="loading">
+            Loading cars...
+        </div>
     </div>
 
 </main>
-
 
 <footer>
     <p>© 2026 GoRide. All Rights Reserved.</p>
@@ -471,6 +128,100 @@
 
 <script>
 
+const API_URL = "https://gorideindia-production.up.railway.app";
+
+async function loadCars() {
+
+    const carsList = document.getElementById("carsList");
+
+    try {
+
+        const response = await fetch(`${API_URL}/cars`);
+
+        if (!response.ok) {
+            throw new Error("Unable to load cars");
+        }
+
+        const cars = await response.json();
+
+        console.log("Cars received:", cars);
+
+        if (!cars || cars.length === 0) {
+
+            carsList.innerHTML = `
+                <div class="error">
+                    No cars available.
+                </div>
+            `;
+
+            return;
+        }
+
+        carsList.innerHTML = "";
+
+        cars.forEach(car => {
+
+            const imagePath = car.image
+                ? `${API_URL}/${car.image}`
+                : `${API_URL}/images/default-car.jpg`;
+
+            const carCard = document.createElement("div");
+
+            carCard.className = "car-card";
+
+            carCard.innerHTML = `
+
+                <img
+                    src="${imagePath}"
+                    alt="${car.name}"
+                    onerror="this.src='${API_URL}/images/default-car.jpg'"
+                >
+
+                <h3>${car.name}</h3>
+
+                <p>
+                    <strong>₹${Number(car.price).toLocaleString("en-IN")} / Day</strong>
+                </p>
+
+                <p>
+                    ${car.type || "Car"} | Self Drive
+                </p>
+
+                <div class="buttons">
+
+                    <button
+                        class="view-btn"
+                        onclick="viewDetails('${car.name}')">
+                        View Details
+                    </button>
+
+                    <button
+                        class="book-btn"
+                        onclick="bookCar('${car.name}')">
+                        Book Now
+                    </button>
+
+                </div>
+            `;
+
+            carsList.appendChild(carCard);
+
+        });
+
+    } catch (error) {
+
+        console.error("Cars loading error:", error);
+
+        carsList.innerHTML = `
+            <div class="error">
+                Unable to load cars.<br>
+                Please try again.
+            </div>
+        `;
+    }
+}
+
+
 function bookCar(carName) {
 
     localStorage.setItem("selectedCar", carName);
@@ -478,8 +229,18 @@ function bookCar(carName) {
     window.location.href = "booking.html";
 }
 
+
+function viewDetails(carName) {
+
+    window.location.href =
+        "cardetails.html?car=" +
+        encodeURIComponent(carName);
+}
+
+
+loadCars();
+
 </script>
 
 </body>
 </html>
-```
