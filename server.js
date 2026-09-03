@@ -1,3 +1,4 @@
+const cors = require("cors");
 require("dotenv").config();
 
 const express = require("express");
@@ -19,6 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // IMPORTANT:
 // This serves index.html, CSS, JS, images, etc.
+app.use(cors());
 app.use(express.static(__dirname));
 
 app.use(
