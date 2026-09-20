@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>About Us | GoRide</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5faf7;
+            color: #17231d;
+        }
+
+        /* NAVBAR */
+        nav {
+            height: 72px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.06);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 30px;
+            font-weight: 800;
+            color: #0b8f4d;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #26352d;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #0b9b50;
+        }
+
+        .book-btn {
+            background: #0b9b50;
+            color: white !important;
+            padding: 11px 20px;
+            border-radius: 8px;
+        }
+
+        /* HERO */
+        .hero {
+            min-height: 360px;
+            background:
+                linear-gradient(135deg, #063d25, #0a7040 55%, #0b9b50);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .hero-content {
+            max-width: 850px;
+        }
+
+        .hero h1 {
+            font-size: 52px;
+            margin-bottom: 18px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            line-height: 1.7;
+            opacity: 0.95;
+        }
+
+        /* MAIN */
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 70px 25px;
+        }
+
+        .section {
+            margin-bottom: 65px;
+        }
+
+        .section h2 {
+            font-size: 34px;
+            color: #087b42;
+            margin-bottom: 18px;
+        }
+
+        .section p {
+            font-size: 17px;
+            line-height: 1.8;
+            color: #526158;
+        }
+
+        /* CARDS */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-top: 35px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.07);
+            border: 1px solid #e4eee8;
+        }
+
+        .card-icon {
+            font-size: 38px;
+            margin-bottom: 18px;
+        }
+
+        .card h3 {
+            font-size: 21px;
+            margin-bottom: 12px;
+            color: #163b29;
+        }
+
+        .card p {
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        /* VISION */
+        .vision {
+            background: #e8f7ef;
+            padding: 45px;
+            border-radius: 20px;
+            border-left: 6px solid #0b9b50;
+        }
+
+        .vision h2 {
+            margin-bottom: 15px;
+            color: #087b42;
+        }
+
+        /* CTA */
+        .cta {
+            background: #063d25;
+            color: white;
+            text-align: center;
+            padding: 55px 25px;
+        }
+
+        .cta h2 {
+            font-size: 35px;
+            margin-bottom: 15px;
+        }
+
+        .cta p {
+            font-size: 17px;
+            margin-bottom: 25px;
+            opacity: 0.9;
+        }
+
+        .cta a {
+            display: inline-block;
+            background: #0b9b50;
+            color: white;
+            text-decoration: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #032619;
+            color: #b9c9c0;
+            text-align: center;
+            padding: 25px;
+            font-size: 14px;
+        }
+
+        /* MOBILE */
+        @media (max-width: 768px) {
+
+            nav {
+                padding: 0 20px;
+            }
+
+            .nav-links {
+                gap: 12px;
+            }
+
+            .nav-links a {
+                font-size: 13px;
+            }
+
+            .hero h1 {
+                font-size: 38px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .vision {
+                padding: 30px 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav>
+
+        <a href="index.html" class="logo">
+            GoRide
+        </a>
+
+        <div class="nav-links">
+
+            <a href="index.html">Home</a>
+            <a href="cars.html">Cars</a>
+            <a href="booking.html">Booking</a>
+            <a href="about.html">About Us</a>
+            <a href="contact.html">Contact</a>
+
+            <a href="booking.html" class="book-btn">
+                Book Now
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- HERO -->
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <h1>About GoRide</h1>
+
+            <p>
+                Drive Freely, Live Fully.
+                <br>
+                A smarter way to experience self-drive mobility.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- CONTENT -->
+    <main class="container">
+
+
+        <!-- WHO WE ARE -->
+        <section class="section">
+
+            <h2>Who We Are</h2>
+
+            <p>
+                GoRide is a self-drive car rental platform built with a simple
+                idea — give people the freedom to travel on their own terms.
+                We are building a technology-driven mobility platform that
+                connects customers with quality vehicles for convenient,
+                flexible and transparent travel.
+            </p>
+
+            <p style="margin-top:15px;">
+                Our goal is to make car rental simple, accessible and
+                trustworthy while creating opportunities for car owners
+                to participate in the growing mobility ecosystem.
+            </p>
+
+        </section>
+
+
+        <!-- WHAT WE DO -->
+        <section class="section">
+
+            <h2>What We Do</h2>
+
+            <div class="cards">
+
+                <div class="card">
+
+                    <div class="card-icon">🚗</div>
+
+                    <h3>Self-Drive Cars</h3>
+
+                    <p>
+                        Choose a car according to your journey and enjoy
+                        the freedom of driving yourself.
+                    </p>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-icon">📱</div>
+
+                    <h3>Simple Booking</h3>
+
+                    <p>
+                        Our platform is designed to make searching,
+                        selecting and booking a car simple.
+                    </p>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-icon">🤝</div>
+
+                    <h3>Owner Network</h3>
+
+                    <p>
+                        We aim to build a strong network of vehicle owners
+                        and create a reliable mobility ecosystem.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- WHY GORIDE -->
+        <section class="section">
+
+            <h2>Why GoRide?</h2>
+
+            <div class="cards">
+
+                <div class="card">
+
+                    <div class="card-icon">🔐</div>
+
+                    <h3>Safety</h3>
+
+                    <p>
+                        Safety and responsible vehicle usage are important
+                        parts of the GoRide experience.
+                    </p>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-icon">💰</div>
+
+                    <h3>Transparent Pricing</h3>
+
+                    <p>
+                        We believe customers should clearly understand
+                        the rental charges before booking.
+                    </p>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-icon">⚡</div>
+
+                    <h3>Convenience</h3>
+
+                    <p>
+                        From selecting a vehicle to completing a booking,
+                        we want to keep the experience straightforward.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- VISION -->
+        <section class="section">
+
+            <div class="vision">
+
+                <h2>Our Vision</h2>
+
+                <p>
+                    GoRide is being built with a long-term vision of becoming
+                    a trusted mobility platform that can grow from local
+                    markets to cities across India and beyond.
+                </p>
+
+                <p style="margin-top:15px;">
+                    We believe mobility should give people freedom,
+                    flexibility and better access to travel.
+                </p>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+    <!-- CTA -->
+    <section class="cta">
+
+        <h2>Ready to Go?</h2>
+
+        <p>
+            Choose your car and start your journey with GoRide.
+        </p>
+
+        <a href="cars.html">
+            Explore Cars
+        </a>
+
+    </section>
+
+
+    <!-- FOOTER -->
+    <footer>
+
+        © 2026 GoRide. All Rights Reserved.
+
+        <br><br>
+
+        Drive Freely, Live Fully.
+
+    </footer>
+
+</body>
+</html>
