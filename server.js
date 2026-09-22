@@ -763,6 +763,10 @@ app.post("/updateCar", (req, res) => {
     );
 
 });
-app.listen(PORT, () => {
-    console.log(`🚗 GoRide Server Started on port ${PORT}`);
-});
+if (process.env.VERCEL !== "1") {
+    app.listen(PORT, () => {
+        console.log(`🚗 GoRide Server Started on port ${PORT}`);
+    });
+}
+
+module.exports = app;
