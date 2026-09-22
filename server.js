@@ -1,57 +1,51 @@
+const multer = require("multer");
 const cors = require("cors");
 require("dotenv").config();
 
 const express = require("express");
 const mysql = require("mysql2");
 const session = require("express-session");
+const bcrypt = require("bcryptjs");
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
 const path = require("path");
 const PDFDocument = require("pdfkit");
 
-const app = express();
-
+const app = express();let razorpay = null;
+let db = null;
 // =========================
-// MIDDLEWARE
-// =========================
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// IMPORTANT:
-// This serves index.html, CSS, JS, images, etc.
-app.use(cors());
-app.use(express.static(__dirname));
-
-app.use(
-    session({
-        secret: process.env.SESSION_SECRET || "goride_secret_key",
-        resave: false,
-        saveUninitialized: false
-    })
-);
-
-// =========================
-// HOME PAGE
+// MYSQL CONNECTION
 // =========================
 
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "index.html"));
-});
+if (
+    process.env.DB_HOST &&
+    process.env.DB_USER &&
+    process.env.DB_NAME
+) {
+    db = mysql.createPool({
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD || "",
+        database: process.env.DB_NAME,
+        port: Number(process.env.DB_PORT || 3306),
+        waitForConnections: true,
+        connectionLimit: 10,
+        queueLimit: 0,
+        enableKeepAlive: true,
+        keepAliveInitialDelay: 0
+    });
 
-// =========================
-// TEST
-// =========================
-
-app.get("/test", (req, res) => {
-    res.send("TEST OK");
-});
-
-// =========================
-// RAZORPAY
-// =========================
-
-let razorpay = null;
+    db.getConnection((err, connection) => {
+        if (err) {
+            console.log("MySQL Connection Error:", err.message);
+        } else {
+            console.log("MySQL Connected Successfully");
+            connection.release();
+        }
+    });
+} else {
+    console.log("MySQL environment variables not configured");
+}
 
 if (
     process.env.RAZORPAY_KEY_ID &&
@@ -62,198 +56,300 @@ if (
         key_secret: process.env.RAZORPAY_KEY_SECRET
     });
 
-    console.log("✅ Razorpay Ready");
+    console.log("Razorpay Ready");
 } else {
-    console.log("⚠️ Razorpay keys not found");
+    console.log("Razorpay keys not found");
 }
 
-// =========================
-// MYSQL DATABASE
-// =========================
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-let db = null;
+app.use(
+    cors({
+        origin: true,
+        credentials: true
+    })
+);
+const staticPath = process.env.VERCEL
+    ? path.join(__dirname, "..")
+    : __dirname;
 
-if (
-    process.env.DB_HOST &&
-    process.env.DB_USER &&
-    process.env.DB_NAME
-) {
+app.use(express.static(staticPath));
+// ================================
+// IMAGE UPLOAD SETUP
+// ================================
 
-    db = mysql.createPool({
-        host: process.env.DB_HOST,
-        user: process.env.DB_USER,
-        password: process.env.DB_PASSWORD || "",
-        database: process.env.DB_NAME,
-        port: Number(process.env.DB_PORT || 3306),
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, "images");
+    },
 
-        waitForConnections: true,
-        connectionLimit: 10,
-        queueLimit: 0,
+    filename: function (req, file, cb) {
+        const uniqueName =
+            Date.now() + "-" + file.originalname;
 
-        enableKeepAlive: true,
-        keepAliveInitialDelay: 0
-    });
+        cb(null, uniqueName);
+    }
+});
 
-    db.getConnection((err, connection) => {
+const upload = multer({
+    storage: storage
+});
 
-        if (err) {
-            console.log("❌ MySQL Connection Error:", err.message);
-        } else {
-            console.log("✅ MySQL Connected Successfully");
-            connection.release();
+app.use(
+    session({
+        secret: process.env.SESSION_SECRET || "goride_secret_key",
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            secure: false,
+            httpOnly: true,
+            maxAge: 24 * 60 * 60 * 1000
         }
-
-    });
-
-} else {
-
-    console.log("⚠️ MySQL environment variables not configured");
-
-}
-
+    })
+);
 // =========================
-// CARS
+// REGISTER - BCRYPT
 // =========================
 
-// =========================
-// CARS
-// =========================
-
-app.get("/cars", (req, res) => {
-
-    console.log("🚗 /cars API called");
+app.post("/register", async (req, res) => {
 
     if (!db) {
-        console.log("❌ Database object is NULL");
-
         return res.status(500).json({
             success: false,
             message: "Database not configured"
         });
     }
 
-    db.query("SELECT * FROM cars", (err, result) => {
+    const { name, phone, email, password } = req.body;
+
+    if (!name || !phone || !email || !password) {
+        return res.status(400).json({
+            success: false,
+            message: "Please fill all fields"
+        });
+    }
+
+    try {
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const sql = `
+            INSERT INTO users
+            (name, phone, email, password)
+            VALUES (?, ?, ?, ?)
+        `;
+
+        db.query(
+            sql,
+            [name, phone, email, hashedPassword],
+            (err, result) => {
+
+                if (err) {
+                    console.log("Register Error:", err.message);
+
+                    return res.status(500).json({
+                        success: false,
+                        message: "Registration Failed"
+                    });
+                }
+
+                res.json({
+                    success: true,
+                    message: "Registration Successful"
+                });
+            }
+        );
+
+    } catch (err) {
+
+        console.log("Register Error:", err);
+
+        res.status(500).json({
+            success: false,
+            message: "Registration Server Error"
+        });
+    }
+});
+
+
+// =========================
+// LOGIN - MOBILE OR EMAIL
+// =========================
+
+app.post("/login", async (req, res) => {
+
+    if (!db) {
+        return res.status(500).json({
+            success: false,
+            message: "Database not configured"
+        });
+    }
+
+    const { mobile, password } = req.body;
+
+    if (!mobile || !password) {
+        return res.status(400).json({
+            success: false,
+            message: "Please enter mobile/email and password"
+        });
+    }
+
+    const loginValue = mobile.trim();
+
+    // MOBILE किंवा EMAIL दोन्हीने user शोधा
+    const sql = `
+        SELECT *
+        FROM users
+        WHERE phone = ? OR email = ?
+        LIMIT 1
+    `;
+
+    db.query(
+        sql,
+        [loginValue, loginValue],
+        async (err, result) => {
+
+            if (err) {
+                console.log("Login Error:", err.message);
+
+                return res.status(500).json({
+                    success: false,
+                    message: "Server Error"
+                });
+            }
+
+            if (result.length === 0) {
+                return res.json({
+                    success: false,
+                    message: "Invalid mobile/email or password"
+                });
+            }
+
+            const user = result[0];
+
+            let passwordMatch = false;
+
+            // नवीन BCRYPT password
+            try {
+                passwordMatch = await bcrypt.compare(
+                    password,
+                    user.password
+                );
+            } catch (error) {
+                passwordMatch = false;
+            }
+
+            // जुना plain-text password असल्यास
+            if (!passwordMatch && user.password === password) {
+
+                passwordMatch = true;
+
+                // जुना password BCRYPT मध्ये convert
+                const newPassword = await bcrypt.hash(
+                    password,
+                    10
+                );
+
+                db.query(
+                    "UPDATE users SET password = ? WHERE id = ?",
+                    [newPassword, user.id]
+                );
+            }
+
+            if (!passwordMatch) {
+                return res.json({
+                    success: false,
+                    message: "Invalid mobile/email or password"
+                });
+            }
+
+            // SESSION
+            req.session.user = {
+                id: user.id,
+                name: user.name,
+                phone: user.phone,
+                email: user.email
+            };
+
+            // ADMIN CHECK
+            const isAdmin =
+                user.email &&
+                user.email.toLowerCase() === "admin@goride.com";
+
+            console.log(
+                "Login Successful:",
+                user.email
+            );
+
+            return res.json({
+                success: true,
+                isAdmin: isAdmin,
+                message: isAdmin
+                    ? "Admin Login Successful"
+                    : "Login Successful"
+            });
+        }
+    );
+});
+// =========================
+// ROUTE PROTECTION
+// =========================
+
+function requireLogin(req, res, next) {
+
+    if (!req.session.user) {
+        return res.status(401).json({
+            success: false,
+            message: "Please login first"
+        });
+    }
+
+    next();
+}
+
+
+// =========================
+// CURRENT LOGGED-IN USER
+// =========================
+
+app.get("/me", requireLogin, (req, res) => {
+
+    res.json({
+        success: true,
+        user: req.session.user
+    });
+
+});
+
+
+// =========================
+// LOGOUT
+// =========================
+
+app.get("/logout", (req, res) => {
+
+    req.session.destroy((err) => {
 
         if (err) {
-            console.log("❌ Cars Database Error:", err.message);
+            console.log("Logout Error:", err.message);
 
             return res.status(500).json({
                 success: false,
-                message: "Unable to load cars",
-                error: err.message
+                message: "Logout failed"
             });
         }
 
-        console.log("✅ Cars found:", result.length);
+        res.clearCookie("connect.sid");
 
-        res.json(result);
+        res.json({
+            success: true,
+            message: "Logout Successful"
+        });
+
     });
+
 });
-
-
-// =========================
-// CREATE RAZORPAY ORDER
-// =========================
-
-app.post("/create-order", async (req, res) => {
-
-    try {
-
-        if (!razorpay) {
-            return res.status(500).json({
-                success: false,
-                message: "Razorpay is not configured"
-            });
-        }
-
-        const amount = Number(req.body.amount);
-
-        if (!amount || amount <= 0) {
-            return res.status(400).json({
-                success: false,
-                message: "Invalid amount"
-            });
-        }
-
-        const order = await razorpay.orders.create({
-            amount: Math.round(amount * 100),
-            currency: "INR",
-            receipt: "goride_" + Date.now()
-        });
-
-        res.json({
-            success: true,
-            order: order,
-            key_id: process.env.RAZORPAY_KEY_ID
-        });
-
-    } catch (err) {
-
-        console.log("Razorpay Order Error:", err);
-
-        res.status(500).json({
-            success: false,
-            message: "Order Failed"
-        });
-    }
-});
-// =========================
-// VERIFY RAZORPAY PAYMENT
-// =========================
-
-app.post("/verify-payment", (req, res) => {
-    try {
-        const {
-            razorpay_order_id,
-            razorpay_payment_id,
-            razorpay_signature
-        } = req.body;
-
-        if (
-            !razorpay_order_id ||
-            !razorpay_payment_id ||
-            !razorpay_signature
-        ) {
-            return res.status(400).json({
-                success: false,
-                message: "Payment verification data missing"
-            });
-        }
-
-        const generatedSignature = crypto
-            .createHmac(
-                "sha256",
-                process.env.RAZORPAY_KEY_SECRET
-            )
-            .update(
-                razorpay_order_id + "|" + razorpay_payment_id
-            )
-            .digest("hex");
-
-        if (generatedSignature !== razorpay_signature) {
-            return res.status(400).json({
-                success: false,
-                message: "Payment verification failed"
-            });
-        }
-
-        res.json({
-            success: true,
-            message: "Payment Verified Successfully",
-            payment_id: razorpay_payment_id,
-            order_id: razorpay_order_id
-        });
-
-    } catch (err) {
-        console.log("Payment Verification Error:", err);
-
-        res.status(500).json({
-            success: false,
-            message: "Payment verification error"
-        });
-    }
-});
-
 // =========================
 // SAVE BOOKING
 // =========================
@@ -289,7 +385,7 @@ app.post("/booking", (req, res) => {
     ) {
         return res.status(400).json({
             success: false,
-            message: "Please fill all booking details"
+            message: "Missing booking details"
         });
     }
 
@@ -310,194 +406,48 @@ app.post("/booking", (req, res) => {
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
-    db.query(
-        sql,
-        [
-            customer_name,
-            mobile,
-            car_name,
-            pickup_date,
-            return_date,
-            total_price,
-            payment_id || null,
-            order_id || null,
-            payment_status || "Pending",
-            "Booked"
-        ],
-        (err, result) => {
-
-            if (err) {
-
-                console.log("Booking Error:", err.message);
-
-                return res.status(500).json({
-                    success: false,
-                    message: "Booking Failed"
-                });
-            }
-
-            res.json({
-                success: true,
-                message: "Booking Saved Successfully",
-                booking_id: result.insertId
-            });
-        }
-    );
-});
-
-// =========================
-// REGISTER
-// =========================
-
-app.post("/register", (req, res) => {
-
-    if (!db) {
-        return res.status(500).json({
-            success: false,
-            message: "Database not configured"
-        });
-    }
-
-    const {
-        name,
-        phone,
-        email,
-        password
-    } = req.body;
-
-    if (!name || !phone || !email || !password) {
-        return res.status(400).json({
-            success: false,
-            message: "Please fill all fields"
-        });
-    }
-
-    const sql = `
-        INSERT INTO users
-        (name, phone, email, password)
-        VALUES (?, ?, ?, ?)
-    `;
-
-    db.query(
-        sql,
-        [name, phone, email, password],
-        (err) => {
-
-            if (err) {
-
-                console.log("Register Error:", err.message);
-
-                return res.status(500).json({
-                    success: false,
-                    message: "Registration Failed"
-                });
-            }
-
-            res.json({
-                success: true,
-                message: "Registration Successful"
-            });
-        }
-    );
-});
-
-// =========================
-// LOGIN
-// =========================
-
-app.post("/login", (req, res) => {
-
-    if (!db) {
-        return res.status(500).json({
-            success: false,
-            message: "Database not configured"
-        });
-    }
-
-    const {
+    const values = [
+        customer_name,
         mobile,
-        password
-    } = req.body;
+        car_name,
+        pickup_date,
+        return_date,
+        total_price,
+        payment_id || null,
+        order_id || null,
+        payment_status || "Paid",
+        "Pending"
+    ];
 
-    if (!mobile || !password) {
-        return res.status(400).json({
-            success: false,
-            message: "Please enter mobile and password"
-        });
-    }
+    db.query(sql, values, (err, result) => {
 
-    const sql = `
-        SELECT *
-        FROM users
-        WHERE phone = ?
-        AND password = ?
-        LIMIT 1
-    `;
+        if (err) {
 
-    db.query(
-        sql,
-        [mobile, password],
-        (err, result) => {
+            console.log(
+                "Booking Save Error:",
+                err.message
+            );
 
-            if (err) {
-
-                console.log("Login Error:", err.message);
-
-                return res.status(500).json({
-                    success: false,
-                    message: "Server Error"
-                });
-            }
-
-            if (result.length === 0) {
-
-                return res.json({
-                    success: false,
-                    message: "Invalid mobile or password"
-                });
-            }
-
-            const user = result[0];
-
-            req.session.user = {
-                id: user.id,
-                name: user.name,
-                phone: user.phone,
-                email: user.email
-            };
-
-            if (user.email === "admin@goride.com") {
-
-                return res.json({
-                    success: true,
-                    isAdmin: true,
-                    message: "Admin Login Successful"
-                });
-            }
-
-            res.json({
-                success: true,
-                isAdmin: false,
-                message: "Login Successful"
+            return res.status(500).json({
+                success: false,
+                message: "Unable to save booking"
             });
         }
-    );
-});
 
-// =========================
-// LOGOUT
-// =========================
+        console.log(
+            "Booking Saved:",
+            result.insertId
+        );
 
-app.get("/logout", (req, res) => {
-
-    req.session.destroy(() => {
         res.json({
             success: true,
-            message: "Logged out"
+            message: "Booking saved successfully",
+            booking_id: result.insertId
         });
-    });
-});
 
+    });
+
+});
 // =========================
 // MY BOOKINGS
 // =========================
@@ -531,7 +481,6 @@ app.get("/mybookings", (req, res) => {
         (err, result) => {
 
             if (err) {
-
                 console.log("My Bookings Error:", err.message);
 
                 return res.status(500).json({
@@ -544,9 +493,8 @@ app.get("/mybookings", (req, res) => {
         }
     );
 });
-
 // =========================
-// ALL BOOKINGS
+// ALL BOOKINGS - ADMIN
 // =========================
 
 app.get("/bookings", (req, res) => {
@@ -563,6 +511,7 @@ app.get("/bookings", (req, res) => {
         (err, result) => {
 
             if (err) {
+                console.log("Bookings Error:", err.message);
 
                 return res.status(500).json({
                     success: false,
@@ -574,97 +523,55 @@ app.get("/bookings", (req, res) => {
         }
     );
 });
+const PORT = process.env.PORT || 3000;
 
-// =========================
-// UPDATE STATUS
-// =========================
 
-app.post("/updateStatus", (req, res) => {
-
-    if (!db) {
-        return res.status(500).json({
-            success: false,
-            message: "Database not configured"
-        });
-    }
-
-    const { id, status } = req.body;
-
-    if (!id || !status) {
-        return res.status(400).json({
-            success: false,
-            message: "Missing information"
-        });
-    }
-
-    db.query(
-        "UPDATE bookings SET status = ? WHERE id = ?",
-        [status, id],
-        (err) => {
-
-            if (err) {
-
-                return res.status(500).json({
-                    success: false,
-                    message: "Update Failed"
-                });
-            }
-
-            res.json({
-                success: true,
-                message: "Status Updated"
-            });
-        }
-    );
+app.get("/test", (req, res) => {
+    res.send("GoRide Server OK");
 });
-
-// =========================
-// DELETE BOOKING
-// =========================
-
-app.post("/deleteBooking", (req, res) => {
-
+// ================================
+// CANCEL BOOKING
+// ================================
+app.put("/cancel-booking/:id", (req, res) => {
     if (!db) {
-        return res.status(500).json({
-            success: false,
-            message: "Database not configured"
-        });
+        return res.status(500).send("Database not configured");
     }
 
-    const { id } = req.body;
-
-    if (!id) {
-        return res.status(400).json({
-            success: false,
-            message: "Booking ID missing"
-        });
+    if (!req.session.user) {
+        return res.status(401).send("Please login");
     }
 
-    db.query(
-        "DELETE FROM bookings WHERE id = ?",
-        [id],
-        (err) => {
+    const bookingId = req.params.id;
+    const mobile = req.session.user.phone;
 
-            if (err) {
+    const sql = `
+        UPDATE bookings
+        SET status = 'Cancelled'
+        WHERE id = ?
+          AND mobile = ?
+          AND status = 'Pending'
+    `;
 
-                return res.status(500).json({
-                    success: false,
-                    message: "Delete Failed"
-                });
-            }
-
-            res.json({
-                success: true,
-                message: "Booking Deleted"
-            });
+    db.query(sql, [bookingId, mobile], (err, result) => {
+        if (err) {
+            console.log("Cancel Booking Error:", err.message);
+            return res.status(500).send("Unable to cancel booking");
         }
-    );
+
+        if (result.affectedRows === 0) {
+            return res.status(400).send(
+                "Booking cannot be cancelled"
+            );
+        }
+
+        console.log("Booking Cancelled:", bookingId);
+
+        res.send("Booking cancelled successfully");
+    });
 });
-
-// =========================
-// DASHBOARD
-// =========================
-
+// ================================
+// ADMIN DASHBOARD
+// ================================
 app.get("/dashboard", (req, res) => {
 
     if (!db) {
@@ -674,262 +581,192 @@ app.get("/dashboard", (req, res) => {
         });
     }
 
-    const dashboard = {};
+    const dashboardSQL = `
+        SELECT
+            (SELECT COUNT(*) FROM bookings) AS totalBookings,
+            (SELECT COUNT(*) FROM cars) AS totalCars,
+            (
+                SELECT COUNT(*)
+                FROM bookings
+                WHERE status = 'Confirmed'
+            ) AS bookedCars,
+            (
+                SELECT COALESCE(SUM(total_price), 0)
+                FROM bookings
+                WHERE status = 'Confirmed'
+            ) AS revenue
+    `;
 
-    db.query(
-        "SELECT COUNT(*) AS totalBookings FROM bookings",
-        (err, bookingResult) => {
+    db.query(dashboardSQL, (err, result) => {
 
-            if (err) {
-                return res.status(500).json({
-                    success: false,
-                    message: "Dashboard Error"
-                });
-            }
-
-            dashboard.totalBookings =
-                bookingResult[0].totalBookings;
-
-            db.query(
-                "SELECT COUNT(*) AS totalCars FROM cars",
-                (err, carResult) => {
-
-                    if (err) {
-                        return res.status(500).json({
-                            success: false,
-                            message: "Dashboard Error"
-                        });
-                    }
-
-                    dashboard.totalCars =
-                        carResult[0].totalCars;
-
-                    db.query(
-                        `SELECT COUNT(*) AS bookedCars
-                         FROM bookings
-                         WHERE status = 'Booked'`,
-                        (err, bookedResult) => {
-
-                            if (err) {
-                                return res.status(500).json({
-                                    success: false,
-                                    message: "Dashboard Error"
-                                });
-                            }
-
-                            dashboard.bookedCars =
-                                bookedResult[0].bookedCars;
-
-                            db.query(
-                                `SELECT COALESCE(SUM(total_price), 0)
-                                 AS revenue
-                                 FROM bookings
-                                 WHERE payment_status = 'Paid'`,
-                                (err, revenueResult) => {
-
-                                    if (err) {
-                                        return res.status(500).json({
-                                            success: false,
-                                            message: "Dashboard Error"
-                                        });
-                                    }
-
-                                    dashboard.revenue =
-                                        revenueResult[0].revenue;
-
-                                    res.json({
-                                        success: true,
-                                        ...dashboard
-                                    });
-                                }
-                            );
-                        }
-                    );
-                }
+        if (err) {
+            console.log(
+                "Dashboard Error:",
+                err.message
             );
+
+            return res.status(500).json({
+                success: false,
+                message: "Unable to load dashboard"
+            });
         }
-    );
+
+        const data = result[0];
+
+        res.json({
+            success: true,
+            totalBookings: Number(data.totalBookings || 0),
+            totalCars: Number(data.totalCars || 0),
+            bookedCars: Number(data.bookedCars || 0),
+            revenue: Number(data.revenue || 0)
+        });
+
+    });
+
 });
+// ================================
+// ADD CAR
+// ================================
 
-// =========================
-// INVOICE
-// =========================
-
-app.get("/invoice/:id", (req, res) => {
+app.post("/addCar", upload.single("image"), (req, res) => {
 
     if (!db) {
         return res.status(500).send("Database not configured");
     }
 
-    const bookingId = req.params.id;
+    const { car_name, category, price } = req.body;
+
+    if (!car_name || !category || !price) {
+        return res.status(400).send("Missing car details");
+    }
+
+    const image = req.file
+        ? req.file.filename
+        : null;
+
+    const sql = `
+        INSERT INTO cars
+        (car_name, category, price, status, image)
+        VALUES (?, ?, ?, ?, ?)
+    `;
 
     db.query(
-        "SELECT * FROM bookings WHERE id = ?",
-        [bookingId],
+        sql,
+        [car_name, category, price, "Available", image],
         (err, result) => {
 
             if (err) {
-                return res.status(500).send("Invoice Error");
+                console.log("Add Car Error:", err.message);
+
+                return res.status(500).send(
+                    "Unable to add car"
+                );
             }
 
-            if (result.length === 0) {
-                return res.status(404).send("Booking Not Found");
+            console.log("Car Added:", result.insertId);
+
+            res.send("Car added successfully");
+        }
+    );
+
+});
+// ================================
+// GET ALL CARS
+// ================================
+
+app.get("/cars", (req, res) => {
+
+    if (!db) {
+        return res.status(500).json({
+            success: false,
+            message: "Database not configured"
+        });
+    }
+
+    db.query(
+        "SELECT * FROM cars ORDER BY id ASC",
+        (err, result) => {
+
+            if (err) {
+                console.log(
+                    "Cars Error:",
+                    err.message
+                );
+
+                return res.status(500).json({
+                    success: false,
+                    message: "Unable to load cars"
+                });
             }
 
-            const booking = result[0];
-
-            const doc = new PDFDocument({
-                size: "A4",
-                margin: 50
-            });
-
-            res.setHeader(
-                "Content-Type",
-                "application/pdf"
-            );
-
-            res.setHeader(
-                "Content-Disposition",
-                `inline; filename=GoRide-Invoice-${booking.id}.pdf`
-            );
-
-            doc.pipe(res);
-
-            doc
-                .fontSize(30)
-                .font("Helvetica-Bold")
-                .text("GoRide", {
-                    align: "center"
-                });
-
-            doc
-                .fontSize(11)
-                .font("Helvetica")
-                .text("Drive Freely, Live Fully", {
-                    align: "center"
-                });
-
-            doc.moveDown();
-
-            doc
-                .fontSize(22)
-                .font("Helvetica-Bold")
-                .text("INVOICE", {
-                    align: "center"
-                });
-
-            doc.moveDown();
-
-            doc
-                .fontSize(11)
-                .font("Helvetica-Bold")
-                .text(`Invoice No: GR-${booking.id}`);
-
-            doc
-                .font("Helvetica")
-                .text(`Booking ID: ${booking.id}`)
-                .text(`Payment ID: ${booking.payment_id || "N/A"}`)
-                .text(
-                    `Payment Status: ${
-                        booking.payment_status || "Pending"
-                    }`
-                );
-
-            doc.moveDown();
-
-            doc
-                .fontSize(15)
-                .font("Helvetica-Bold")
-                .text("CUSTOMER DETAILS");
-
-            doc.moveDown(0.5);
-
-            doc
-                .fontSize(11)
-                .font("Helvetica")
-                .text(`Name: ${booking.customer_name}`)
-                .text(`Mobile: ${booking.mobile}`);
-
-            doc.moveDown();
-
-            doc
-                .fontSize(15)
-                .font("Helvetica-Bold")
-                .text("BOOKING DETAILS");
-
-            doc.moveDown(0.5);
-
-            doc
-                .fontSize(11)
-                .font("Helvetica")
-                .text(`Car: ${booking.car_name}`)
-                .text(`Pickup Date: ${booking.pickup_date}`)
-                .text(`Return Date: ${booking.return_date}`);
-
-            doc.moveDown();
-
-            doc
-                .fontSize(15)
-                .font("Helvetica-Bold")
-                .text("PAYMENT DETAILS");
-
-            doc.moveDown(0.5);
-
-            doc
-                .fontSize(13)
-                .font("Helvetica")
-                .text(`Total Amount: Rs. ${booking.total_price}`);
-
-            doc.moveDown(2);
-
-            doc
-                .fontSize(13)
-                .font("Helvetica-Bold")
-                .text(
-                    "Thank you for choosing GoRide!",
-                    { align: "center" }
-                );
-
-            doc
-                .fontSize(10)
-                .font("Helvetica")
-                .text(
-                    "Drive safely and enjoy your journey.",
-                    { align: "center" }
-                );
-
-            doc.moveDown(2);
-
-            doc
-                .fontSize(9)
-                .text(
-                    "This is a computer-generated invoice.",
-                    { align: "center" }
-                );
-
-            doc
-                .text(
-                    "GoRide | Drive Freely, Live Fully",
-                    { align: "center" }
-                );
-
-            doc.end();
+            res.json(result);
         }
     );
 });
-// =========================
-// LOCAL SERVER
-// =========================
+// ================================
+// UPDATE CAR
+// ================================
 
-if (require.main === module) {
+app.post("/updateCar", (req, res) => {
 
-    const PORT = process.env.PORT || 3000;
+    if (!db) {
+        return res.status(500).send("Database not configured");
+    }
 
-    app.listen(PORT, () => {
-        console.log(
-            `GoRide Server Started on port ${PORT}`
-        );
-    });
-}
+    const { id, name, type, price } = req.body;
 
-module.exports = app;
+    if (!id || !name || !type || !price) {
+        return res.status(400).send("Missing car details");
+    }
+
+    const sql = `
+        UPDATE cars
+        SET
+            car_name = ?,
+            category = ?,
+            price = ?
+        WHERE id = ?
+    `;
+
+    db.query(
+        sql,
+        [
+            name,
+            type,
+            price,
+            id
+        ],
+        (err, result) => {
+
+            if (err) {
+                console.log(
+                    "Update Car Error:",
+                    err.message
+                );
+
+                return res.status(500).send(
+                    "Unable to update car"
+                );
+            }
+
+            if (result.affectedRows === 0) {
+                return res.status(404).send(
+                    "Car not found"
+                );
+            }
+
+            console.log(
+                "Car Updated:",
+                id
+            );
+
+            res.send(
+                "Car updated successfully"
+            );
+        }
+    );
+
+});
+app.listen(PORT, () => {
+    console.log(`🚗 GoRide Server Started on port ${PORT}`);
+});
