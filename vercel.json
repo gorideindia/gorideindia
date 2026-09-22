@@ -1,5 +1,15 @@
 {
   "version": 2,
+  "functions": {
+    "api/index.js": {
+      "includeFiles": [
+        "**/*.html",
+        "**/*.css",
+        "**/*.js",
+        "images/**"
+      ]
+    }
+  },
   "routes": [
     {
       "handle": "filesystem"

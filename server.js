@@ -70,11 +70,7 @@ app.use(
         credentials: true
     })
 );
-const staticPath = process.env.VERCEL
-    ? path.join(__dirname, "..")
-    : __dirname;
-
-app.use(express.static(staticPath));
+app.use(express.static(__dirname));
 // ================================
 // IMAGE UPLOAD SETUP
 // ================================
