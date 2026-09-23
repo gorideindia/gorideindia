@@ -7,36 +7,139 @@ let pricePerDay = 0;
 // ===============================
 // CAR PRICES
 // ===============================
-
 const carPrices = {
-    "Tata Punch": 1900,
-    "Maruti Swift": 1900,
-    "Brezza": 2200,
-    "Creta": 2500,
-    "Innova": 3000
+    "Tata Punch": {
+        8: 475,
+        12: 950,
+        24: 1900
+    },
+
+    "Maruti Swift": {
+        8: 475,
+        12: 950,
+        24: 1900
+    },
+
+    "Brezza": {
+        8: 550,
+        12: 1100,
+        24: 2200
+    },
+
+    "Creta": {
+        8: 625,
+        12: 1250,
+        24: 2500
+    },
+
+    "Innova": {
+        8: 750,
+        12: 1500,
+        24: 3000
+    }
 };
+// ===============================
+// RENTAL CHARGES
+// ===============================
+
+function updateRentalCharges() {
+
+    const carElement = document.getElementById("car");
+    const depositElement =
+        document.getElementById("depositAmount");
+
+    if (!carElement || !depositElement) return;
+
+    const car = carElement.value;
+
+    let deposit = 0;
+
+    // Hatchback
+    if (
+        car === "Tata Punch" ||
+        car === "Maruti Swift"
+    ) {
+        deposit = 3000;
+    }
+
+    // Compact SUV
+    else if (
+        car === "Brezza" ||
+        car === "Creta"
+    ) {
+        deposit = 3000;
+    }
+
+    // 7-Seater
+    else if (
+        car === "Innova"
+    ) {
+        deposit = 5000;
+    }
+
+    if (deposit > 0) {
+        depositElement.innerText =
+            "₹" + deposit.toLocaleString("en-IN");
+    } else {
+        depositElement.innerText =
+            "Select Car";
+    }
+}
 
 
 // ===============================
 // CALCULATE PRICE
 // ===============================
-
 function calculatePrice() {
 
-    const carElement = document.getElementById("car");
-    const priceElement = document.getElementById("price");
+    const carElement =
+        document.getElementById("car");
 
-    if (!carElement || !priceElement) return;
+    const durationElement =
+        document.getElementById("duration");
 
-    const car = carElement.value;
+    const priceElement =
+        document.getElementById("price");
 
-    pricePerDay = carPrices[car] || 0;
+    if (
+        !carElement ||
+        !durationElement ||
+        !priceElement
+    ) {
+        return;
+    }
 
-    priceElement.value = pricePerDay > 0
-        ? "₹" + pricePerDay
-        : "";
+    const car =
+        carElement.value;
 
-    calculateDays();
+    const duration =
+        Number(durationElement.value);
+
+    if (
+        !car ||
+        !duration ||
+        !carPrices[car]
+    ) {
+
+        pricePerDay = 0;
+
+        priceElement.value = "";
+
+        updateRentalCharges();
+
+        return;
+    }
+
+    pricePerDay =
+        carPrices[car][duration] || 0;
+
+    priceElement.value =
+        pricePerDay > 0
+            ? "₹" +
+              pricePerDay.toLocaleString("en-IN")
+            : "";
+
+    updateRentalCharges();
 }
 
 
@@ -478,6 +581,8 @@ async function verifyPaymentAndSaveBooking(
         const bookingResponse =
             await fetch(
                 "/booking",
+                    "https://gorideindia-production.up.railway.app/login",
+
                 {
 
                     method: "POST",
@@ -590,18 +695,60 @@ async function verifyPaymentAndSaveBooking(
 }
 
 
-// ===============================
-// LOAD SELECTED CAR
-// ===============================
-
 window.addEventListener(
     "DOMContentLoaded",
     function () {
 
-        const selectedCar =
-            localStorage.getItem(
-                "selectedCar"
+        // ===============================
+        // DATE VALIDATION
+        // ===============================
+
+        const pickupElement =
+            document.getElementById("pickup");
+
+        const returnElement =
+            document.getElementById("return");
+
+        if (pickupElement && returnElement) {
+
+            // Today's date
+            const today =
+                new Date().toISOString().split("T")[0];
+
+            // Pickup cannot be before today
+            pickupElement.min = today;
+
+            // Return initially cannot be before today
+            returnElement.min = today;
+
+            // Return date must be
+            // same as or after pickup date
+            pickupElement.addEventListener(
+                "change",
+                function () {
+
+                    returnElement.min =
+                        pickupElement.value;
+
+                    if (
+                        returnElement.value &&
+                        returnElement.value <
+                        pickupElement.value
+                    ) {
+
+                        returnElement.value = "";
+                    }
+                }
             );
+        }
+
+
+        // ===============================
+        // LOAD SELECTED CAR
+        // ===============================
+
+        const selectedCar =
+            localStorage.getItem("selectedCar");
 
         const carElement =
             document.getElementById("car");
@@ -616,6 +763,7 @@ window.addEventListener(
 
             calculatePrice();
         }
+
     }
 );
 
@@ -710,3 +858,69 @@ window.addEventListener(
 );
 
 window.selectCar = selectCar;
+// ===============================
+// LOGIN (FIXED)
+// =============================// ===============================
+// LOGIN
+// ===============================
+
+async function login() {
+
+    try {
+
+        const mobile =
+            document.getElementById("mobile").value.trim();
+
+        const password =
+            document.getElementById("password").value;
+
+        if (!mobile || !password) {
+            alert("Please enter mobile and password.");
+            return;
+        }
+
+        const response = await fetch(
+            "http://localhost:3000/login",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    mobile: mobile,
+                    password: password
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        console.log("Login Response:", data);
+
+        if (!data.success) {
+            alert(
+                data.message ||
+                "Invalid mobile or password."
+            );
+            return;
+        }
+
+        alert("Login Successful 🚗");
+
+        if (data.isAdmin) {
+    window.location.href = "admin.html";
+} else {
+    window.location.href = "index.html";
+}
+
+    } catch (error) {
+
+        console.error("Login Error:", error);
+
+        alert("Unable to connect to server.");
+    }
+}
+
+window.login = login;

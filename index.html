@@ -543,10 +543,21 @@ footer {
         <a href="contact.html">Contact</a>
     </div>
 
-    <div class="nav-buttons">
-        <a href="login.html" class="login-btn">Login</a>
-        <a href="booking.html" class="book-btn">Book Now</a>
-    </div>
+<div class="nav-buttons">
+
+    <a href="login.html" class="login-btn" id="loginBtn">
+        Login
+    </a>
+
+    <a href="profile.html" class="login-btn" id="profileBtn" style="display:none;">
+        My Profile
+    </a>
+
+    <a href="booking.html" class="book-btn">
+        Book Now
+    </a>
+
+</div>
 
 </nav>
 
@@ -753,7 +764,10 @@ footer {
 <script>
 
 const API_URL =
-"https://gorideindia-production.up.railway.app";
+    "https://gorideindia-production.up.railway.app";
+
+let homeCars = [];
+
 
 async function loadHomeCars() {
 
@@ -765,8 +779,18 @@ async function loadHomeCars() {
         const response =
             await fetch(API_URL + "/cars");
 
+        if (!response.ok) {
+            throw new Error(
+                "Cars API Error: " + response.status
+            );
+        }
+
         const cars =
             await response.json();
+
+        homeCars = cars;
+
+        window.homeCars = cars;
 
         if (!cars || cars.length === 0) {
 
@@ -778,12 +802,13 @@ async function loadHomeCars() {
 
         container.innerHTML = "";
 
-        cars.forEach(car => {
+        cars.slice(0, 8).forEach(car => {
 
             const card =
                 document.createElement("div");
 
-            card.className = "car-card";
+            card.className =
+                "car-card";
 
             const image =
                 API_URL + "/" + car.image;
@@ -808,7 +833,7 @@ async function loadHomeCars() {
                     </div>
 
                     <div class="car-price">
-                        ₹${car.price}
+                        ₹${Number(car.price).toLocaleString("en-IN")}
                         <span>/ Day</span>
                     </div>
 
@@ -840,15 +865,85 @@ async function loadHomeCars() {
 
 function bookCar(carId) {
 
+    const car =
+        window.homeCars.find(
+            c => c.id == carId
+        );
+
+    if (!car) {
+
+        console.error(
+            "Car not found:",
+            carId
+        );
+
+        return;
+    }
+
+    localStorage.setItem(
+        "selectedCar",
+        car.name
+    );
+
     localStorage.setItem(
         "selectedCarId",
-        carId
+        car.id
     );
 
     window.location.href =
         "booking.html";
 }
 
+
+async function checkUserLogin() {
+
+    try {
+
+        const response =
+            await fetch(
+                "http://localhost:3000/me",
+                {
+                    credentials: "include"
+                }
+            );
+
+        const data =
+            await response.json();
+
+        const loginBtn =
+            document.getElementById("loginBtn");
+
+        const profileBtn =
+            document.getElementById("profileBtn");
+
+        if (data.success) {
+
+            loginBtn.style.display =
+                "none";
+
+            profileBtn.style.display =
+                "inline-block";
+
+        } else {
+
+            loginBtn.style.display =
+                "inline-block";
+
+            profileBtn.style.display =
+                "none";
+        }
+
+    } catch (error) {
+
+        console.log(
+            "Login Check Error:",
+            error
+        );
+    }
+}
+
+
+checkUserLogin();
 
 loadHomeCars();
 

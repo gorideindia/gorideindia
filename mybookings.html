@@ -38,6 +38,35 @@ Back to Profile
 </button>
 
 </div>
+<script>
+async function checkLogin() {
+
+    try {
+
+        const response = await fetch(
+            "http://localhost:3000/me",
+            {
+                credentials: "include"
+            }
+        );
+
+        const data = await response.json();
+
+        if (!data.success) {
+            window.location.href = "login.html";
+            return;
+        }
+
+    } catch (error) {
+
+        console.error("Session Check Error:", error);
+        window.location.href = "login.html";
+
+    }
+}
+
+checkLogin();
+</script>
 
 <script src="mybookings.js"></script>
 

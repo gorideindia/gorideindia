@@ -78,38 +78,47 @@
     >
 
 
-    <!-- CAR -->
+<!-- CAR -->
 
-    <label for="car">Select Car</label>
+<label for="car">Select Car</label>
 
-    <select
-        id="car"
-        onchange="calculatePrice()"
-    >
+<select
+    id="car"
+    onchange="calculatePrice()"
+>
+    <option value="">Select Car</option>
 
-        <option value="">Select Car</option>
+    <option value="Tata Punch">
+        Tata Punch - ₹1900/day
+    </option>
 
-        <option value="Tata Punch">
-            Tata Punch - ₹1900/day
-        </option>
+    <option value="Maruti Swift">
+        Maruti Swift - ₹1900/day
+    </option>
 
-        <option value="Maruti Swift">
-            Maruti Swift - ₹1900/day
-        </option>
+    <option value="Brezza">
+        Brezza - ₹2200/day
+    </option>
 
-        <option value="Brezza">
-            Brezza - ₹2200/day
-        </option>
+    <option value="Creta">
+        Creta - ₹2500/day
+    </option>
 
-        <option value="Creta">
-            Creta - ₹2500/day
-        </option>
+    <option value="Innova">
+        Innova - ₹3000/day
+    </option>
+</select>
 
-        <option value="Innova">
-            Innova - ₹3000/day
-        </option>
 
-    </select>
+<!-- CITY -->
+
+<label for="city">Select City</label>
+
+<select id="city">
+    <option value="Ahmednagar">
+        Ahmednagar
+    </option>
+</select>
 
 
     <!-- PRICE -->
@@ -130,9 +139,54 @@
         id="days"
         readonly
     >
+    <label for="duration">Rental Duration</label>
+
+<select
+    id="duration"
+    onchange="calculatePrice()"
+>
+    <option value="">Select Duration</option>
+    <option value="8">8 Hours</option>
+    <option value="12">12 Hours</option>
+    <option value="24">24 Hours</option>
+</select>
 
 
     <label for="total">Total Amount</label>
+    <!-- ================================
+     RENTAL INFORMATION
+================================ -->
+
+<div class="rental-info">
+
+    <h3>GoRide Rental Information</h3>
+
+    <div class="rental-row">
+        <span>🛡️ Insurance Cover</span>
+        <strong id="insuranceCharge">₹380</strong>
+    </div>
+
+    <div class="rental-row">
+        <span>💰 Security Deposit</span>
+        <strong id="depositAmount">Select Car</strong>
+    </div>
+
+    <div class="rental-row">
+        <span>🧼 Washing Charge</span>
+        <strong>₹300 if applicable</strong>
+    </div>
+
+    <p class="rental-note">
+        Security deposit is refundable as per GoRide rental
+        terms and vehicle condition policy.
+    </p>
+
+    <label>
+        <input type="checkbox" id="agreeTerms">
+        I agree to GoRide rental terms and conditions.
+    </label>
+
+</div>
 
     <input
         type="text"
@@ -177,6 +231,47 @@
         readonly
         placeholder="Generated after payment"
     >
+    <!-- ================================
+     RENTAL INFORMATION
+================================ -->
+
+<div class="rental-info">
+
+    <h3>Rental Information</h3>
+
+    <div class="info-item">
+        <strong>🛡️ Insurance Cover</strong>
+        <p>
+            Insurance cover is included as per GoRide rental
+            policy and applicable insurance terms.
+        </p>
+    </div>
+
+    <div class="info-item">
+        <strong>💰 Security Deposit</strong>
+        <p>
+            Security deposit is applicable as per the selected
+            vehicle and rental policy.
+        </p>
+    </div>
+
+    <div class="info-item">
+        <strong>🧼 Washing Charge</strong>
+        <p>
+            Washing/cleaning charges may apply if the vehicle
+            is returned excessively dirty.
+        </p>
+    </div>
+
+    <div class="info-item">
+        <strong>📋 Important</strong>
+        <p>
+            Please read and accept the rental terms before
+            making the payment.
+        </p>
+</div>
+
+</div>
 
 
     <!-- PAYMENT -->

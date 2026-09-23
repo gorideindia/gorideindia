@@ -16,11 +16,12 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^4.22.2",
     "express-session": "^1.19.0",
-    "multer": "^2.2.0",
+    "multer": "^2.4.0",
     "mysql2": "^3.23.4",
     "pdfkit": "^0.19.1",
     "razorpay": "^2.9.8"

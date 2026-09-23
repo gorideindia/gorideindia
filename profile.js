@@ -1,4 +1,10 @@
-fetch("/profile")
+// =========================
+// LOAD USER PROFILE
+// =========================
+
+fetch("http://localhost:3000/me", {
+    credentials: "include"
+})
 
 .then(res => {
 
@@ -11,21 +17,55 @@ fetch("/profile")
 
 })
 
-.then(user => {
+.then(data => {
 
-    if (!user) return;
+    if (!data || !data.success) {
+        window.location.href = "login.html";
+        return;
+    }
 
-    document.getElementById("userName").innerText = user.name;
-    document.getElementById("userMobile").innerText = user.phone;
-    document.getElementById("userEmail").innerText = user.email;
+    const user = data.user;
+
+    document.getElementById("userName").innerText =
+        user.name;
+
+    document.getElementById("userMobile").innerText =
+        user.phone;
+
+    document.getElementById("userEmail").innerText =
+        user.email;
+
+})
+
+.catch(error => {
+
+    console.error("Profile Error:", error);
+
+    window.location.href = "login.html";
 
 });
 
-function logout(){
 
-    fetch("/logout")
+// =========================
+// LOGOUT
+// =========================
+
+function logout() {
+
+    fetch("http://localhost:3000/logout", {
+        credentials: "include"
+    })
+
     .then(() => {
+
         window.location.href = "login.html";
+
+    })
+
+    .catch(error => {
+
+        console.error("Logout Error:", error);
+
     });
 
 }

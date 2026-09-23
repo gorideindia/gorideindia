@@ -201,51 +201,39 @@ async function loadCars() {
     try {
 
         const response = await fetch("/cars");
-
         const data = await response.json();
 
-        if (
-            !response.ok ||
-            !Array.isArray(data)
-        ) {
-            throw new Error(
-                "Unable to load cars"
-            );
+        if (!response.ok || !Array.isArray(data)) {
+            throw new Error("Unable to load cars");
         }
 
-        const table =
-            document.getElementById("carTable");
+        const table = document.getElementById("carTable");
 
         if (!table) return;
 
         table.innerHTML = "";
 
-
         data.forEach(car => {
 
-            const row =
-                document.createElement("tr");
+            const row = document.createElement("tr");
 
-            const imageName =
-                car.image || "";
+            const imageName = car.image || "";
 
-            const imageHTML =
-                imageName
-                    ? `
-                        <img
-                            src="/images/${encodeURIComponent(imageName)}"
-                            width="100"
-                            height="60"
-                            style="
-                                object-fit:cover;
-                                border-radius:8px;
-                            "
-                            alt="${escapeHTML(car.car_name)}"
-                            onerror="this.style.display='none';"
-                        >
-                    `
-                    : "No Image";
-
+            const imageHTML = imageName
+                ? `
+                    <img
+                        src="/images/${encodeURIComponent(imageName)}"
+                        width="100"
+                        height="60"
+                        style="
+                            object-fit:cover;
+                            border-radius:8px;
+                        "
+                        alt="${escapeHTML(car.car_name)}"
+                        onerror="this.style.display='none';"
+                    >
+                  `
+                : "No Image";
 
             row.innerHTML = `
 
@@ -268,26 +256,19 @@ async function loadCars() {
                         .toLocaleString("en-IN")}
                 </td>
 
-                <td>
+<td>
+    <button
+        class="edit"
+        onclick="editCar(${car.id}, '${escapeJS(car.car_name)}', '${escapeJS(car.category)}', ${Number(car.price || 0)})">
+        Edit
+    </button>
 
-                    <button
-                        class="edit"
-                        onclick="editCar(
-                            ${car.id},
-                            '${escapeJS(car.car_name)}',
-                            '${escapeJS(car.category)}',
-                            ${Number(car.price || 0)}
-                        )">
-                        Edit
-                    </button>
-
-                    <button
-                        class="delete"
-                        onclick="deleteCar(${car.id})">
-                        Delete
-                    </button>
-
-                </td>
+    <button
+        class="delete"
+        onclick="deleteCar(${car.id})">
+        Delete
+    </button>
+</td>
 
             `;
 
@@ -318,49 +299,42 @@ async function addCar() {
     const carName =
         document.getElementById("carName")?.value.trim();
 
-    const category =
+    const type =
         document.getElementById("category")?.value.trim();
 
     const price =
-        document.getElementById("price")?.value.trim();
+        document.getElementById("carPrice")?.value.trim();
 
     const image =
         document.getElementById("image")?.files[0];
 
 
     if (!carName) {
-
         alert("Please enter car name.");
-
         return;
     }
 
-    if (!category) {
-
+    if (!type) {
         alert("Please enter category.");
-
         return;
     }
 
     if (!price || Number(price) <= 0) {
-
         alert("Please enter valid price.");
-
         return;
     }
 
 
-    const formData =
-        new FormData();
+    const formData = new FormData();
 
     formData.append(
-        "car_name",
+        "name",
         carName
     );
 
     formData.append(
-        "category",
-        category
+        "type",
+        type
     );
 
     formData.append(
@@ -383,11 +357,8 @@ async function addCar() {
 
         const response =
             await fetch("/addCar", {
-
                 method: "POST",
-
                 body: formData
-
             });
 
 
@@ -421,7 +392,7 @@ async function addCar() {
         ).value = "";
 
         document.getElementById(
-            "price"
+            "carPrice"
         ).value = "";
 
         document.getElementById(
@@ -456,10 +427,9 @@ async function addCar() {
 async function editCar(
     id,
     name,
-    category,
+    type,
     price
 ) {
-
     const newName =
         prompt(
             "Car Name:",
@@ -471,13 +441,13 @@ async function editCar(
     }
 
 
-    const newCategory =
+    const newType =
         prompt(
             "Category:",
-            category
+            type
         );
 
-    if (newCategory === null) {
+    if (newType === null) {
         return;
     }
 
@@ -495,7 +465,7 @@ async function editCar(
 
     if (
         !newName.trim() ||
-        !newCategory.trim() ||
+        !newType.trim() ||
         !newPrice ||
         Number(newPrice) <= 0
     ) {
@@ -514,7 +484,6 @@ async function editCar(
             await fetch(
                 "/updateCar",
                 {
-
                     method: "POST",
 
                     headers: {
@@ -526,17 +495,16 @@ async function editCar(
 
                         id: id,
 
-                        car_name:
+                        name:
                             newName.trim(),
 
-                        category:
-                            newCategory.trim(),
+                        type:
+                            newType.trim(),
 
                         price:
                             Number(newPrice)
 
                     })
-
                 }
             );
 
@@ -588,12 +556,7 @@ async function editCar(
 
 async function deleteCar(id) {
 
-    if (
-        !confirm(
-            "Delete this car?"
-        )
-    ) {
-
+    if (!confirm("Delete this car?")) {
         return;
     }
 
@@ -604,7 +567,6 @@ async function deleteCar(id) {
             await fetch(
                 "/deleteCar",
                 {
-
                     method: "POST",
 
                     headers: {
@@ -615,7 +577,6 @@ async function deleteCar(id) {
                     body: JSON.stringify({
                         id: id
                     })
-
                 }
             );
 
@@ -659,8 +620,6 @@ async function deleteCar(id) {
     }
 
 }
-
-
 // ===============================
 // DATE FORMAT
 // ===============================
@@ -671,17 +630,13 @@ function formatDate(dateValue) {
         return "-";
     }
 
-    const date =
-        new Date(dateValue);
+    const date = new Date(dateValue);
 
     if (isNaN(date.getTime())) {
         return dateValue;
     }
 
-    return date.toLocaleDateString(
-        "en-GB"
-    );
-
+    return date.toLocaleDateString("en-GB");
 }
 
 

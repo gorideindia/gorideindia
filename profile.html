@@ -30,9 +30,6 @@
     </button>
 
     <button onclick="location.href='mybookings.html'">
-        My Bookings
-    </button>
-    <button onclick="location.href='mybookings.html'">
 My Bookings
 </button>
 
@@ -41,6 +38,37 @@ My Bookings
     </button>
 
 </div>
+<script>
+async function checkLogin() {
+
+    try {
+
+        const response = await fetch(
+            "http://localhost:3000/me",
+            {
+                credentials: "include"
+            }
+        );
+
+        const data = await response.json();
+
+        if (!data.success) {
+            window.location.href = "login.html";
+            return;
+        }
+
+    } catch (error) {
+
+        console.error("Session Check Error:", error);
+        window.location.href = "login.html";
+
+    }
+}
+
+checkLogin();
+</script>
+
+<script src="profile.js"></script>
 
 <script src="profile.js"></script>
 
