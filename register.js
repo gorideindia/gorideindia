@@ -10,7 +10,7 @@ function registerUser() {
         return;
     }
 
-    fetch("/register", {
+fetch("https://gorideindia-production.up.railway.app/register",  {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
