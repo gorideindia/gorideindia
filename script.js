@@ -527,6 +527,7 @@ async function verifyPaymentAndSaveBooking(
                 {
 
                     method: "POST",
+                    credentials: "include",
 
                     headers: {
                         "Content-Type":
