@@ -585,7 +585,7 @@ async function verifyPaymentAndSaveBooking(
                     "https://gorideindia-production.up.railway.app/login",
 
                 {
-
+                     credentials: "include",
                     method: "POST",
 
                     headers: {
