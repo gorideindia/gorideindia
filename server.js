@@ -91,19 +91,22 @@ const storage = multer.diskStorage({
 const upload = multer({
     storage: storage
 });
-
+app.set("trust proxy", 1);
 app.use(
     session({
-        secret: process.env.SESSION_SECRET || "goride_secret_key",
-        resave: false,
-        saveUninitialized: false,
-        cookie: {
-            secure: false,
-            httpOnly: true,
-            maxAge: 24 * 60 * 60 * 1000
-        }
-    })
-);
+
+secret: process.env.SESSION_SECRET || "goride_secret_key",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: true,
+        httpOnly: true,
+        sameSite: "none",
+        maxAge: 24 * 60 * 60 * 1000
+    }
+}
+    ));
+
 // =========================
 // REGISTER - BCRYPT
 // =========================
