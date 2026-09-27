@@ -459,7 +459,6 @@ async function startPayment() {
             typeof Razorpay ===
             "undefined"
         ) {
-
             alert(
                 "Razorpay Checkout failed to load."
             );
@@ -908,7 +907,7 @@ async function login() {
             );
             return;
         }
-
+localStorage.setItem("gorideUser", JSON.stringify(data.user));
         alert("Login Successful 🚗");
 
         if (data.isAdmin) {

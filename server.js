@@ -263,13 +263,19 @@ app.post("/login", async (req, res) => {
                 });
             }
 
-            // SESSION
-            req.session.user = {
-                id: user.id,
-                name: user.name,
-                phone: user.phone,
-                email: user.email
-            };
+            return res.json({
+    success: true,
+    isAdmin: isAdmin,
+    user: {
+        id: user.id,
+        name: user.name,
+        phone: user.phone,
+        email: user.email
+    },
+    message: isAdmin
+        ? "Admin Login Successful"
+        : "Login Successful"
+});
 
             // ADMIN CHECK
             const isAdmin =
