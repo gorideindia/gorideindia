@@ -355,7 +355,7 @@ nav {
 
 /* =========================
    FEATURES
-========================= */
+========================= 
 
 .features {
     padding: 0 7% 90px;
@@ -879,6 +879,7 @@ function bookCar(carId) {
 
         return;
     }
+    
 
     localStorage.setItem(
         "selectedCar",
@@ -896,7 +897,6 @@ function bookCar(carId) {
 
 
 async function checkUserLogin() {
-
 
     const loginBtn =
         document.getElementById("loginBtn");
@@ -917,15 +917,25 @@ async function checkUserLogin() {
 
         return;
     }
-
-    loginBtn.style.display =
-        "inline-block";
-
-    profileBtn.style.display =
-        "none";
 }
-loadHomeCars();s
+
+loginBtn.style.display =
+    "inline-block";
+
+profileBtn.style.display =
+    "none";
+
+
+checkUserLogin();
+
+loadHomeCars();
+
+checkUserLogin();
+
 </script>
 
 </body>
 </html>
+
+
+
