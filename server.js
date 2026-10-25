@@ -33,10 +33,13 @@ if (
         queueLimit: 0,
         enableKeepAlive: true,
         keepAliveInitialDelay: 0,
-        ssl: {
-    rejectUnauthorized: true
-        }
-    });
+                ssl: {
+            ca: require("fs").readFileSync(
+                require("path").join(__dirname, "ca.pem"),
+                "utf8"
+            )
+                    }
+         });
 
     db.getConnection((err, connection) => {
         if (err) {
