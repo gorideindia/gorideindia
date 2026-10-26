@@ -34,10 +34,9 @@ if (
         enableKeepAlive: true,
         keepAliveInitialDelay: 0,
                 ssl: {
-            ca: require("fs").readFileSync(
-                require("path").join(__dirname, "ca.pem"),
-                "utf8"
-            )
+            ssl: {
+    ca: process.env.DB_SSL_CA
+}
                     }
          });
 
