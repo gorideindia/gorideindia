@@ -33,14 +33,9 @@ if (
         queueLimit: 0,
         enableKeepAlive: true,
         keepAliveInitialDelay: 0,
-                ssl: {
-            ssl: {
-    ca: process.env.DB_SSL_CA
-}
-                    }
-         });
+                ssl: { ca: process.env.DB_SSL_CA  } });
 
-    db.getConnection((err, connection) => {
+  db.getConnection((err, connection) => {
         if (err) {
             console.log("MySQL Connection Error:", err.message);
         } else {
