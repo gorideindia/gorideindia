@@ -693,10 +693,8 @@ app.get("/cars", (req, res) => {
         (err, result) => {
 
             if (err) {
-                console.log(
-                    "Cars Error:",
-                    err.message
-                );
+                if (err) 
+console.log("Cars Error:", err);
 
                 return res.status(500).json({
                     success: false,
